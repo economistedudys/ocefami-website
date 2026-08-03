@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articles — OCEFAMI</title>
+<meta name="description" content="Articles et réflexions d'OCEFAMI sur la foi, la famille et le développement communautaire en Haïti.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html#top" class="brand">
+      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <span>OCEFAMI</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="links" id="navLinks">
+      <a href="index.html#top">Accueil</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="emissions.html">Émissions</a>
+      <a href="videos.html">Vidéos</a>
+      <a href="evenements.html">Événements</a>
+      <a href="articles.html">Articles</a>
+      <a href="index.html#apropos">À propos</a>
+      <a href="index.html#contact" class="cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Accueil</a> / Articles</p>
+      <h1>Articles & réflexions</h1>
+      <p class="lead">Enseignements, témoignages et actualités d'OCEFAMI, pour encourager les églises, les familles et les jeunes leaders.</p>
+    </div>
+    <div class="wing-divider">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C240 90 480 0 720 30C960 60 1200 10 1440 40V90H0V40Z" fill="#FBF7F0"/></svg>
+    </div>
+  </section>
+
+  <section class="media-section">
+    <div class="wrap">
+      <div class="articles-list">
+
+        <a href="article-1.html" class="article-card">
+          <div class="date">
+            <span class="day">02</span>
+            <span class="month">Août</span>
+          </div>
+          <div>
+            <h3>Bienvenue sur le nouveau site d'OCEFAMI</h3>
+            <p>Nous sommes heureux de lancer notre site web, un nouvel espace pour partager notre mission, nos activités et rester connectés avec vous.</p>
+            <span class="read-more">Lire l'article →</span>
+          </div>
+        </a>
+
+        <!-- Pour ajouter un nouvel article, dupliquez le bloc <a class="article-card"> ci-dessus,
+             changez le lien vers un nouveau fichier (ex: article-2.html), la date, le titre et le résumé. -->
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> OCEFAMI — Tous droits réservés.</span>
+    <span>Haïti 🇭🇹</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }));
+</script>
+
+</body>
+</html>

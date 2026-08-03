@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrières — OCEFAMI</title>
+<meta name="description" content="Rejoignez l'équipe OCEFAMI en Haïti. Candidatures spontanées bienvenues.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html#top" class="brand">
+      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <span>OCEFAMI</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="links" id="navLinks">
+      <a href="index.html#top">Accueil</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="emissions.html">Émissions</a>
+      <a href="videos.html">Vidéos</a>
+      <a href="evenements.html">Événements</a>
+      <a href="articles.html">Articles</a>
+      <a href="careers.html">Carrières</a>
+      <a href="partnership.html">Partenariat</a>
+      <a href="volontaire.html">Bénévolat</a>
+      <a href="index.html#apropos">À propos</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="dons.html" class="cta">Faire un don</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Accueil</a> / Carrières</p>
+      <h1>Rejoindre l'équipe OCEFAMI</h1>
+      <p class="lead">Nous n'avons pas de poste ouvert actuellement, mais nous accueillons volontiers les candidatures spontanées de personnes désireuses de servir avec nous.</p>
+    </div>
+    <div class="wing-divider">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C240 90 480 0 720 30C960 60 1200 10 1440 40V90H0V40Z" fill="#FBF7F0"/></svg>
+    </div>
+  </section>
+
+  <section class="media-section">
+    <div class="wrap">
+      <div class="coming-soon" style="margin-bottom:48px;">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </div>
+        <h3>Aucun poste ouvert actuellement</h3>
+        <p>Dès qu'une opportunité se présentera, elle sera publiée ici. En attendant, envoyez-nous votre candidature ci-dessous — nous la garderons précieusement.</p>
+      </div>
+
+      <div class="form-wrap">
+        <h3>Candidature spontanée</h3>
+        <p class="sub">Parlez-nous de vous et de la manière dont vous aimeriez contribuer à la mission d'OCEFAMI.</p>
+
+        <form action="https://formspree.io/f/mbdnngyv" method="POST">
+          <input type="hidden" name="_subject" value="Candidature spontanée — OCEFAMI">
+          <div class="form-grid">
+            <div class="field">
+              <label for="c-name">Nom complet</label>
+              <input id="c-name" type="text" name="name" required>
+            </div>
+            <div class="field">
+              <label for="c-email">Email</label>
+              <input id="c-email" type="email" name="email" required>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="c-phone">Téléphone</label>
+              <input id="c-phone" type="tel" name="phone">
+            </div>
+            <div class="field">
+              <label for="c-domain">Domaine d'intérêt</label>
+              <select id="c-domain" name="domain">
+                <option>Administration</option>
+                <option>Formation / Éducation</option>
+                <option>Communication / Médias</option>
+                <option>Musique / Louange</option>
+                <option>Logistique / Terrain</option>
+                <option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid full">
+            <div class="field">
+              <label for="c-link">Lien vers CV / LinkedIn / portfolio (optionnel)</label>
+              <input id="c-link" type="url" name="link" placeholder="https://...">
+            </div>
+            <div class="field">
+              <label for="c-message">Parlez-nous de vous</label>
+              <textarea id="c-message" name="message" placeholder="Votre parcours, vos compétences, votre motivation..." required></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Envoyer ma candidature</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> OCEFAMI — Tous droits réservés.</span>
+    <span>Haïti 🇭🇹</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }));
+</script>
+
+</body>
+</html>

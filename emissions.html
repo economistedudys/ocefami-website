@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Émissions — OCEFAMI</title>
+<meta name="description" content="Les émissions OCEFAMI : programmes et rendez-vous réguliers pour les églises et les familles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html#top" class="brand">
+      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <span>OCEFAMI</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="links" id="navLinks">
+      <a href="index.html#top">Accueil</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="emissions.html">Émissions</a>
+      <a href="videos.html">Vidéos</a>
+      <a href="evenements.html">Événements</a>
+      <a href="articles.html">Articles</a>
+      <a href="index.html#apropos">À propos</a>
+      <a href="index.html#contact" class="cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Accueil</a> / Émissions</p>
+      <h1>Nos émissions</h1>
+      <p class="lead">Des programmes réguliers pensés pour équiper les églises, accompagner les familles et former les jeunes leaders de demain.</p>
+    </div>
+    <div class="wing-divider">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C240 90 480 0 720 30C960 60 1200 10 1440 40V90H0V40Z" fill="#FBF7F0"/></svg>
+    </div>
+  </section>
+
+  <section class="media-section">
+    <div class="wrap">
+      <div class="coming-soon">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M8.5 8.5a5 5 0 0 0 0 7"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M5.5 5.5a9 9 0 0 0 0 13"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </div>
+        <h3>Bientôt disponible</h3>
+        <p>Nous préparons le lancement de nos émissions. Revenez bientôt pour découvrir nos programmes, ou suivez-nous sur Facebook pour être informé du lancement.</p>
+      </div>
+
+      <!-- Quand les épisodes seront prêts, remplacez le bloc ci-dessus par des cartes de ce type : -->
+      <!--
+      <div class="media-grid">
+        <div class="media-card">
+          <div class="thumb"><svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/></svg></div>
+          <div class="body">
+            <span class="tag">Épisode 1</span>
+            <h3>Titre de l'épisode</h3>
+            <p>Courte description de l'épisode et de ce dont il est question.</p>
+          </div>
+        </div>
+      </div>
+      -->
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> OCEFAMI — Tous droits réservés.</span>
+    <span>Haïti 🇭🇹</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }));
+</script>
+
+</body>
+</html>
