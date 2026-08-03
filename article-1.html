@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienvenue sur le nouveau site d'OCEFAMI — OCEFAMI</title>
+<meta name="description" content="Nous sommes heureux de lancer notre site web, un nouvel espace pour partager notre mission, nos activités et rester connectés avec vous.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html#top" class="brand">
+      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <span>OCEFAMI</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="links" id="navLinks">
+      <a href="index.html#top">Accueil</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="emissions.html">Émissions</a>
+      <a href="videos.html">Vidéos</a>
+      <a href="evenements.html">Événements</a>
+      <a href="articles.html">Articles</a>
+      <a href="index.html#apropos">À propos</a>
+      <a href="index.html#contact" class="cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="media-section" style="padding-top:56px;">
+    <div class="wrap">
+      <div class="article-body">
+        <a href="articles.html" class="back-link">← Retour aux articles</a>
+        <p class="meta">Publié le 2 août 2026</p>
+        <h1>Bienvenue sur le nouveau site d'OCEFAMI</h1>
+
+        <p>Nous sommes heureux de vous accueillir sur le tout nouveau site web d'OCEFAMI ! Cet espace a été pensé comme un point de rencontre entre notre organisation et vous — que vous soyez membre d'une église partenaire, membre d'une famille accompagnée, ou simplement curieux de découvrir notre mission.</p>
+
+        <p>À travers ce site, vous pourrez suivre nos activités, découvrir nos programmes d'accompagnement pour les églises et les familles, et bientôt écouter notre podcast, regarder nos vidéos et suivre nos émissions.</p>
+
+        <p>Nous croyons que la communication et la transparence sont essentielles pour bâtir la confiance avec les communautés que nous servons. C'est pourquoi nous publierons régulièrement des articles pour partager nos réflexions, nos témoignages et les avancées de notre travail sur le terrain.</p>
+
+        <p>Merci de nous accompagner dans cette nouvelle étape. N'hésitez pas à nous contacter si vous avez des questions ou si vous souhaitez vous impliquer à nos côtés.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> OCEFAMI — Tous droits réservés.</span>
+    <span>Haïti 🇭🇹</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }));
+</script>
+
+</body>
+</html>
