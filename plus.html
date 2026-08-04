@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plus — OCEFAMI</title>
+<meta name="description" content="Carrières, espaces partenaires et bénévolat chez OCEFAMI — rejoignez notre mission en Haïti.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html#top" class="brand">
+      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <span>OCEFAMI</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="links" id="navLinks">
+      <a href="index.html#top">Accueil</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="emissions.html">Émissions</a>
+      <a href="evenements.html">Événements</a>
+      <a href="ressources.html">Ressources</a>
+      <a href="plus.html">Plus</a>
+      <a href="index.html#apropos">À propos</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="dons.html" class="cta">Faire un don</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero" style="background-image:linear-gradient(160deg, rgba(13,42,68,0.90) 0%, rgba(18,58,92,0.85) 60%, rgba(28,74,112,0.80) 100%), url('https://images.unsplash.com/photo-1744957280619-6f6eca6e79bf?auto=format<section class="page-hero">fit=crop<section class="page-hero">w=1600<section class="page-hero">q=75');">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Accueil</a> / Plus</p>
+      <h1>Carrières, partenariats & bénévolat</h1>
+      <p class="lead">Il y a plusieurs façons de s'impliquer avec OCEFAMI : rejoindre l'équipe, devenir partenaire, ou donner de votre temps comme bénévole.</p>
+    </div>
+    <div class="wing-divider">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C240 90 480 0 720 30C960 60 1200 10 1440 40V90H0V40Z" fill="#FBF7F0"/></svg>
+    </div>
+  </section>
+
+  <section class="media-section">
+    <div class="wrap">
+      <nav class="subnav">
+        <a href="#carrieres" class="active">Carrières</a>
+        <a href="#partenaires">Espaces Partenaires</a>
+        <a href="#benevolat">Bénévolat</a>
+      </nav>
+
+      <!-- ================= CARRIÈRES ================= -->
+      <div id="carrieres" style="margin-bottom:80px; scroll-margin-top:90px;">
+        <div class="section-head" style="margin-bottom:28px;">
+          <p class="eyebrow">Carrières</p>
+          <h2>Rejoindre l'équipe OCEFAMI</h2>
+        </div>
+
+        <div class="coming-soon" style="margin-bottom:40px;">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </div>
+          <h3>Aucun poste ouvert actuellement</h3>
+          <p>Dès qu'une opportunité se présentera, elle sera publiée ici. En attendant, envoyez-nous votre candidature ci-dessous — nous la garderons précieusement.</p>
+        </div>
+
+        <div class="form-wrap">
+          <h3>Candidature spontanée</h3>
+          <p class="sub">Parlez-nous de vous et de la manière dont vous aimeriez contribuer à la mission d'OCEFAMI.</p>
+
+          <form action="https://formspree.io/f/mbdnngyv" method="POST">
+            <input type="hidden" name="_subject" value="Candidature spontanée — OCEFAMI">
+            <div class="form-grid">
+              <div class="field">
+                <label for="c-name">Nom complet</label>
+                <input id="c-name" type="text" name="name" required>
+              </div>
+              <div class="field">
+                <label for="c-email">Email</label>
+                <input id="c-email" type="email" name="email" required>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="c-phone">Téléphone</label>
+                <input id="c-phone" type="tel" name="phone">
+              </div>
+              <div class="field">
+                <label for="c-domain">Domaine d'intérêt</label>
+                <select id="c-domain" name="domain">
+                  <option>Administration</option>
+                  <option>Formation / Éducation</option>
+                  <option>Communication / Médias</option>
+                  <option>Musique / Louange</option>
+                  <option>Logistique / Terrain</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="c-link">Lien vers CV / LinkedIn / portfolio (optionnel)</label>
+                <input id="c-link" type="url" name="link" placeholder="https://...">
+              </div>
+              <div class="field">
+                <label for="c-message">Parlez-nous de vous</label>
+                <textarea id="c-message" name="message" placeholder="Votre parcours, vos compétences, votre motivation..." required></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer ma candidature</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ================= ESPACES PARTENAIRES ================= -->
+      <div id="partenaires" style="margin-bottom:80px; scroll-margin-top:90px;">
+        <div class="section-head" style="margin-bottom:28px;">
+          <p class="eyebrow">Espaces Partenaires</p>
+          <h2>Devenir partenaire</h2>
+        </div>
+
+        <div class="form-wrap">
+          <p class="sub">Église, organisation, entreprise ou institution — construisons ensemble un impact durable pour les familles et les communautés en Haïti.</p>
+
+          <form action="https://formspree.io/f/mbdnngyv" method="POST">
+            <input type="hidden" name="_subject" value="Proposition de partenariat — OCEFAMI">
+            <div class="form-grid">
+              <div class="field">
+                <label for="p-org">Nom de l'organisation</label>
+                <input id="p-org" type="text" name="organization" required>
+              </div>
+              <div class="field">
+                <label for="p-sector">Secteur d'activité</label>
+                <select id="p-sector" name="sector">
+                  <option>Église / Ministère</option>
+                  <option>ONG / Organisation à but non lucratif</option>
+                  <option>Entreprise</option>
+                  <option>Institution éducative</option>
+                  <option>Institution gouvernementale</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="p-name">Nom du contact</label>
+                <input id="p-name" type="text" name="contact_name" required>
+              </div>
+              <div class="field">
+                <label for="p-role">Fonction</label>
+                <input id="p-role" type="text" name="role">
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="p-email">Email</label>
+                <input id="p-email" type="email" name="email" required>
+              </div>
+              <div class="field">
+                <label for="p-phone">Téléphone</label>
+                <input id="p-phone" type="tel" name="phone">
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="p-type">Type de partenariat envisagé</label>
+                <select id="p-type" name="partnership_type">
+                  <option>Financier</option>
+                  <option>Matériel / logistique</option>
+                  <option>Formation / expertise</option>
+                  <option>Communication / visibilité</option>
+                  <option>Événementiel</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="p-message">Décrivez votre proposition</label>
+                <textarea id="p-message" name="message" placeholder="Contexte, objectifs, comment vous imaginez la collaboration..." required></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer la proposition</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ================= BÉNÉVOLAT ================= -->
+      <div id="benevolat" style="scroll-margin-top:90px;">
+        <div class="section-head" style="margin-bottom:28px;">
+          <p class="eyebrow">Bénévolat</p>
+          <h2>Devenir bénévole</h2>
+        </div>
+        <div class="section-photo">
+          <img src="https://images.unsplash.com/photo-1574465636391-3d2f98aee2ea?auto=format&fit=crop&w=1600&q=75" alt="Enfants souriants en Haïti" loading="lazy">
+        </div>
+
+        <div class="pillars" style="margin-bottom:40px;">
+          <div class="pillar">
+            <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg></div>
+            <h3>Auprès des enfants</h3>
+            <p>Encadrement, animation et soutien scolaire.</p>
+          </div>
+          <div class="pillar">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5c4-2 8-2 8 0v14c0-2-4-2-8 0V5Z"/><path d="M20 5c-4-2-8-2-8 0v14c0-2 4-2 8 0V5Z"/></svg></div>
+            <h3>Formation & enseignement</h3>
+            <p>Transmettre un savoir-faire ou un enseignement biblique.</p>
+          </div>
+          <div class="pillar">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+            <h3>Musique & louange</h3>
+            <p>Contribuer aux temps de louange et aux événements.</p>
+          </div>
+          <div class="pillar">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 21v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/><circle cx="8" cy="7" r="3"/><path d="M16 21v-2a4 4 0 0 0-2-3.46"/><path d="M13.5 4.5a3 3 0 0 1 0 5.66"/></svg></div>
+            <h3>Terrain & logistique</h3>
+            <p>Organisation, transport et soutien aux activités.</p>
+          </div>
+        </div>
+
+        <div class="form-wrap">
+          <h3>Formulaire de bénévolat</h3>
+          <p class="sub">Dites-nous qui vous êtes et comment vous aimeriez vous impliquer — nous vous recontacterons rapidement.</p>
+
+          <form action="https://formspree.io/f/mbdnngyv" method="POST">
+            <input type="hidden" name="_subject" value="Nouvelle candidature bénévole — OCEFAMI">
+            <div class="form-grid">
+              <div class="field">
+                <label for="v-name">Nom complet</label>
+                <input id="v-name" type="text" name="name" required>
+              </div>
+              <div class="field">
+                <label for="v-email">Email</label>
+                <input id="v-email" type="email" name="email" required>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="v-phone">Téléphone</label>
+                <input id="v-phone" type="tel" name="phone">
+              </div>
+              <div class="field">
+                <label for="v-location">Ville / zone</label>
+                <input id="v-location" type="text" name="location" placeholder="Ex: Delmas, Port-au-Prince">
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="v-skill">Domaine de compétence</label>
+                <select id="v-skill" name="skill">
+                  <option>Enseignement / Éducation</option>
+                  <option>Musique / Louange</option>
+                  <option>Logistique / Terrain</option>
+                  <option>Communication / Médias</option>
+                  <option>Médical / Santé</option>
+                  <option>Administration</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="v-availability">Disponibilité</label>
+                <select id="v-availability" name="availability">
+                  <option>Quelques heures par semaine</option>
+                  <option>Un jour par semaine</option>
+                  <option>Occasionnellement / événements ponctuels</option>
+                  <option>À discuter</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="v-message">Parlez-nous de votre motivation</label>
+                <textarea id="v-message" name="message" placeholder="Pourquoi souhaitez-vous devenir bénévole avec OCEFAMI ? Quelles sont vos compétences ou expériences pertinentes ?" required></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer ma candidature</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> OCEFAMI — Tous droits réservés.</span>
+    <div class="social-links">
+      <a href="https://www.facebook.com/profile.php?id=100083064204287" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/ocefami/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@ocefami" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      </a>
+      <a href="https://youtu.be/SKU03zK3qik" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3V9Z" fill="#fff" stroke="none"/></svg>
+      </a>
+    </div>
+    <span>Haïti 🇭🇹</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }));
+
+  const subnavLinks = document.querySelectorAll('.subnav a');
+  const sections = ['carrieres','partenaires','benevolat'].map(id => document.getElementById(id));
+  window.addEventListener('scroll', () => {
+    let current = sections[0].id;
+    sections.forEach(sec => {
+      if(window.scrollY >= sec.offsetTop - 140) current = sec.id;
+    });
+    subnavLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+
+</body>
+</html>
