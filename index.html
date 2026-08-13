@@ -15,7 +15,7 @@
 <header>
   <div class="nav">
     <a href="index.html#top" class="brand">
-      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <img src="assets/logo.png" alt="Logo OCEFAMI">
       <span>OCEFAMI</span>
     </a>
     <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
@@ -27,7 +27,17 @@
       <a href="emissions.html">Émissions</a>
       <a href="evenements.html">Événements</a>
       <a href="ressources.html">Ressources</a>
-      <a href="plus.html">Plus</a>
+      <div class="nav-dropdown">
+        <button type="button" class="dropdown-toggle" id="plusToggle">
+          Plus
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-menu" id="plusMenu">
+          <a href="plus.html#carrieres">Carrières</a>
+          <a href="plus.html#partenaires">Espaces Partenaires</a>
+          <a href="plus.html#benevolat">Bénévolat</a>
+        </div>
+      </div>
       <a href="index.html#apropos">À propos</a>
       <a href="index.html#contact">Contact</a>
       <a href="dons.html" class="cta">Faire un don</a>
@@ -41,7 +51,7 @@
     <div class="wrap">
       <p class="eyebrow">Église · Famille · Haïti</p>
       <h1>Équiper les églises,<br>former une <em>génération</em> d'espérance.</h1>
-      <p class="lead">OCEFAMI est une organisation chrétienne qui équipe les églises, forme les enfants et les jeunes, accompagne les familles et promeut les valeurs bibliques, le leadership et la responsabilité citoyenne pour contribuer au développement d'une Haïti prospère et solidaire.</p>
+      <p class="lead">Depuis Haïti, OCEFAMI marche aux côtés des églises, des familles et des jeunes pour bâtir, ensemble, une génération de leaders au service de leur pays.</p>
       <div class="actions">
         <a href="index.html#apropos" class="btn btn-primary">Découvrir notre mission</a>
         <a href="index.html#contact" class="btn btn-ghost">Nous contacter</a>
@@ -184,6 +194,27 @@
     navLinks.classList.remove('open');
     menuBtn.setAttribute('aria-expanded','false');
   }));
+
+  /* Menu déroulant "Plus" */
+  const plusToggle = document.getElementById('plusToggle');
+  const plusMenu = document.getElementById('plusMenu');
+  if (plusToggle && plusMenu) {
+    plusToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = plusMenu.classList.toggle('open');
+      plusToggle.classList.toggle('open', isOpen);
+    });
+    document.addEventListener('click', (e) => {
+      if (!plusMenu.contains(e.target) && e.target !== plusToggle) {
+        plusMenu.classList.remove('open');
+        plusToggle.classList.remove('open');
+      }
+    });
+    plusMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      plusMenu.classList.remove('open');
+      plusToggle.classList.remove('open');
+    }));
+  }
 </script>
 
 </body>
