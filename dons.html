@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Faire un don — OCEFAMI</title>
-<meta name="description" content="Soutenez la mission d'OCEFAMI en Haïti par un don via MonCash, PayPal, Zelle ou virement bancaire.">
+<meta name="description" content="Faites un don à OCEFAMI pour soutenir notre mission auprès des églises, des familles et des jeunes en Haïti.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,60 +50,76 @@
   <section class="media-section">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Moyens de paiement</p>
-        <h2>Choisissez la méthode qui vous convient</h2>
+        <p class="eyebrow">Faire un don</p>
+        <h2>Faites une demande de don</h2>
+        <p>Remplissez ce formulaire avec le montant souhaité — nous vous contacterons rapidement pour convenir ensemble du moyen de paiement le plus simple pour vous.</p>
       </div>
 
-      <div class="donate-grid">
+      <div class="form-wrap">
+        <form id="donForm" action="https://formspree.io/f/mbdnngyv" method="POST">
+          <input type="hidden" name="_subject" value="Nouvelle demande de don — OCEFAMI">
+          <input type="hidden" name="frequence" id="frequenceInput" value="Unique">
+          <input type="hidden" name="montant" id="montantInput" value="">
 
-        <!-- MonCash -->
-        <div class="donate-card">
-          <div class="method-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
-          <h3>MonCash</h3>
-          <div class="donate-row"><span class="k">Numéro</span><span class="v">+509 47 77 1392</span></div>
-          <div class="donate-note">Envoyez votre don directement depuis l'app MonCash à ce numéro.</div>
-        </div>
+          <span class="form-step-label">1. Type de don</span>
+          <div class="freq-toggle">
+            <button type="button" class="freq-btn selected" data-freq="Unique">Don unique</button>
+            <button type="button" class="freq-btn" data-freq="Mensuel">Don mensuel</button>
+          </div>
 
-        <!-- NatCash -->
-        <div class="donate-card">
-          <div class="method-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
-          <h3>NatCash</h3>
-          <div class="donate-row"><span class="k">Numéro</span><span class="v">+509 40 36 6805</span></div>
-          <div class="donate-note">Envoyez votre don directement depuis l'app NatCash à ce numéro.</div>
-        </div>
+          <span class="form-step-label">2. Montant (USD)</span>
+          <div class="amount-grid">
+            <button type="button" class="amount-btn" data-amount="25">25 $</button>
+            <button type="button" class="amount-btn" data-amount="50">50 $</button>
+            <button type="button" class="amount-btn" data-amount="100">100 $</button>
+            <button type="button" class="amount-btn" data-amount="200">200 $</button>
+          </div>
+          <div class="amount-custom" id="amountCustomWrap">
+            <span>$</span>
+            <input type="number" min="1" step="1" id="amountCustom" placeholder="Autre montant">
+          </div>
 
-        <!-- PayPal -->
-        <div class="donate-card">
-          <div class="method-icon"><svg viewBox="0 0 24 24"><path d="M7 21l3-14h5a4 4 0 0 1 4 4c0 3-2 5-5 5H9"/><path d="M6 8h5a4 4 0 0 1 4 4"/></svg></div>
-          <h3>PayPal</h3>
-          <div class="donate-row"><span class="k">Email</span><span class="v">dudysmakenson@gmail.com</span></div>
-          <div class="donate-note">Envoyez votre don via PayPal à l'adresse email ci-dessus (option "Envoyer à un ami/famille" pour éviter les frais).</div>
-        </div>
+          <span class="form-step-label">3. Mes coordonnées</span>
+          <div class="form-grid">
+            <div class="field">
+              <label for="d-prenom">Prénom</label>
+              <input id="d-prenom" type="text" name="prenom" required>
+            </div>
+            <div class="field">
+              <label for="d-nom">Nom</label>
+              <input id="d-nom" type="text" name="nom" required>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="d-email">Email</label>
+              <input id="d-email" type="email" name="email" required>
+            </div>
+            <div class="field">
+              <label for="d-phone">Téléphone</label>
+              <input id="d-phone" type="tel" name="telephone" required>
+            </div>
+          </div>
+          <div class="form-grid full">
+            <div class="field">
+              <label for="d-pays">Pays</label>
+              <select id="d-pays" name="pays">
+                <option>Haïti</option>
+                <option>États-Unis</option>
+                <option>République dominicaine</option>
+                <option>Canada</option>
+                <option>France</option>
+                <option>Autre</option>
+              </select>
+            </div>
+          </div>
 
-        <!-- Zelle -->
-        <div class="donate-card">
-          <div class="method-icon"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg></div>
-          <h3>Zelle</h3>
-          <div class="donate-row"><span class="k">Email</span><span class="v">Fleurinevarline@gmail.com</span></div>
-          <div class="donate-note">Depuis votre application bancaire (États-Unis), envoyez votre don via Zelle à cet email.</div>
-        </div>
-
-        <!-- Virement bancaire -->
-        <div class="donate-card">
-          <div class="method-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg></div>
-          <h3>Virement bancaire</h3>
-          <div class="donate-row"><span class="k">Titulaire</span><span class="v">Makenson Dudys</span></div>
-          <div class="donate-row"><span class="k">Banque</span><span class="v">Banco BHD (Rép. Dominicaine)</span></div>
-          <div class="donate-row"><span class="k">Compte USD</span><span class="v">38401360027</span></div>
-          <div class="donate-row"><span class="k">Compte standard</span><span class="v">DO60BCBH00000000038401360027</span></div>
-          <div class="donate-row"><span class="k">SWIFT (intl.)</span><span class="v">BCBHDOSDXXX</span></div>
-          <div class="donate-note">Pour un virement international, des informations complémentaires (adresse du titulaire) peuvent être requises — <a href="index.html#contact" style="color:var(--navy-deep); font-weight:700; text-decoration:underline;">contactez-nous</a> pour les obtenir.</div>
-        </div>
-
+          <button type="submit" class="btn btn-primary" style="margin-top:10px;">Envoyer ma demande de don</button>
+        </form>
       </div>
 
       <div class="donate-note" style="margin-top:32px; max-width:680px;">
-        Une question sur les dons, ou vous préférez un autre moyen de paiement ? <a href="index.html#contact" style="color:var(--navy-deep); font-weight:700; text-decoration:underline;">Contactez-nous</a>, nous serons heureux de vous aider.
+        Vos informations bancaires ne sont jamais demandées ici. Après réception de votre demande, un membre de notre équipe vous contactera directement par email ou téléphone pour finaliser votre don en toute sécurité.
       </div>
     </div>
   </section>
@@ -142,6 +158,45 @@
     navLinks.classList.remove('open');
     menuBtn.setAttribute('aria-expanded','false');
   }));
+
+  /* ---- Formulaire de don : fréquence + montant ---- */
+  const freqBtns = document.querySelectorAll('.freq-btn');
+  const freqInput = document.getElementById('frequenceInput');
+  freqBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      freqBtns.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      freqInput.value = btn.dataset.freq;
+    });
+  });
+
+  const amountBtns = document.querySelectorAll('.amount-btn');
+  const amountInput = document.getElementById('montantInput');
+  const customWrap = document.getElementById('amountCustomWrap');
+  const customInput = document.getElementById('amountCustom');
+
+  amountBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      amountBtns.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      customWrap.classList.remove('selected');
+      customInput.value = '';
+      amountInput.value = btn.dataset.amount + ' $';
+    });
+  });
+
+  customInput.addEventListener('input', () => {
+    amountBtns.forEach(b => b.classList.remove('selected'));
+    customWrap.classList.toggle('selected', customInput.value.length > 0);
+    amountInput.value = customInput.value ? customInput.value + ' $' : '';
+  });
+
+  document.getElementById('donForm').addEventListener('submit', (e) => {
+    if (!amountInput.value) {
+      e.preventDefault();
+      alert('Merci de choisir ou saisir un montant avant d\'envoyer votre demande.');
+    }
+  });
 </script>
 
 </body>
