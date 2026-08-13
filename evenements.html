@@ -15,7 +15,7 @@
 <header>
   <div class="nav">
     <a href="index.html#top" class="brand">
-      <img src="assets/logo.jpg" alt="Logo OCEFAMI">
+      <img src="assets/logo.png" alt="Logo OCEFAMI">
       <span>OCEFAMI</span>
     </a>
     <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
@@ -27,7 +27,17 @@
       <a href="emissions.html">Émissions</a>
       <a href="evenements.html">Événements</a>
       <a href="ressources.html">Ressources</a>
-      <a href="plus.html">Plus</a>
+      <div class="nav-dropdown">
+        <button type="button" class="dropdown-toggle" id="plusToggle">
+          Plus
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-menu" id="plusMenu">
+          <a href="plus.html#carrieres">Carrières</a>
+          <a href="plus.html#partenaires">Espaces Partenaires</a>
+          <a href="plus.html#benevolat">Bénévolat</a>
+        </div>
+      </div>
       <a href="index.html#apropos">À propos</a>
       <a href="index.html#contact">Contact</a>
       <a href="dons.html" class="cta">Faire un don</a>
@@ -57,7 +67,7 @@
       </nav>
 
       <!-- ---------- CALENDRIER ---------- -->
-      <div id="calendrier" style="margin-bottom:72px; scroll-margin-top:90px;">
+      <div id="calendrier" style="margin-bottom:96px; scroll-margin-top:90px;">
         <div class="section-head" style="margin-bottom:28px;">
           <p class="eyebrow">Calendrier</p>
           <h2>Activités à venir</h2>
@@ -81,7 +91,7 @@
       </div>
 
       <!-- ---------- CONCERTS & ACTIVITÉS ---------- -->
-      <div id="concerts" style="margin-bottom:72px; scroll-margin-top:90px;">
+      <div id="concerts" style="margin-bottom:96px; scroll-margin-top:90px;">
         <div class="section-head" style="margin-bottom:28px;">
           <p class="eyebrow">Concerts & activités</p>
           <h2>Ce qui s'en vient</h2>
@@ -96,7 +106,7 @@
       </div>
 
       <!-- ---------- ARTISTES ---------- -->
-      <div id="artistes" style="margin-bottom:72px; scroll-margin-top:90px;">
+      <div id="artistes" style="margin-bottom:96px; scroll-margin-top:90px;">
         <div class="section-head" style="margin-bottom:28px;">
           <p class="eyebrow">Artistes</p>
           <h2>Artistes chrétiens à découvrir</h2>
@@ -162,6 +172,27 @@
     navLinks.classList.remove('open');
     menuBtn.setAttribute('aria-expanded','false');
   }));
+
+  /* Menu déroulant "Plus" */
+  const plusToggle = document.getElementById('plusToggle');
+  const plusMenu = document.getElementById('plusMenu');
+  if (plusToggle && plusMenu) {
+    plusToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = plusMenu.classList.toggle('open');
+      plusToggle.classList.toggle('open', isOpen);
+    });
+    document.addEventListener('click', (e) => {
+      if (!plusMenu.contains(e.target) && e.target !== plusToggle) {
+        plusMenu.classList.remove('open');
+        plusToggle.classList.remove('open');
+      }
+    });
+    plusMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      plusMenu.classList.remove('open');
+      plusToggle.classList.remove('open');
+    }));
+  }
 
   /* ---------------------------------------------------------
      CALENDRIER DES ÉVÉNEMENTS
