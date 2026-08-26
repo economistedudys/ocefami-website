@@ -23,8 +23,16 @@
     </button>
     <nav class="links" id="navLinks">
       <a href="index.html#top">Accueil</a>
-      <a href="podcast.html">Podcast</a>
-      <a href="emissions.html">Émissions</a>
+      <div class="nav-dropdown">
+        <button type="button" class="dropdown-toggle" data-dropdown="media">
+          Médias
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-menu" data-dropdown-menu="media">
+          <a href="medias.html#emissions">Émissions</a>
+          <a href="medias.html#podcast">Podcast</a>
+        </div>
+      </div>
       <a href="evenements.html">Événements</a>
       <a href="ressources.html">Ressources</a>
       <div class="nav-dropdown">
@@ -99,26 +107,29 @@
     menuBtn.setAttribute('aria-expanded','false');
   }));
 
-  /* Menu déroulant "Plus" */
-  const plusToggle = document.getElementById('plusToggle');
-  const plusMenu = document.getElementById('plusMenu');
-  if (plusToggle && plusMenu) {
-    plusToggle.addEventListener('click', (e) => {
+  /* Menus déroulants (Médias, Plus, ...) */
+  document.querySelectorAll('.nav-dropdown').forEach(wrapper => {
+    const toggle = wrapper.querySelector('.dropdown-toggle');
+    const menu = wrapper.querySelector('.dropdown-menu');
+    if (!toggle || !menu) return;
+    toggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = plusMenu.classList.toggle('open');
-      plusToggle.classList.toggle('open', isOpen);
+      document.querySelectorAll('.dropdown-menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
+      document.querySelectorAll('.dropdown-toggle.open').forEach(t => { if (t !== toggle) t.classList.remove('open'); });
+      const isOpen = menu.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
     });
-    document.addEventListener('click', (e) => {
-      if (!plusMenu.contains(e.target) && e.target !== plusToggle) {
-        plusMenu.classList.remove('open');
-        plusToggle.classList.remove('open');
-      }
-    });
-    plusMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      plusMenu.classList.remove('open');
-      plusToggle.classList.remove('open');
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      toggle.classList.remove('open');
     }));
-  }
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.dropdown-menu.open').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.dropdown-toggle.open').forEach(t => t.classList.remove('open'));
+    }
+  });
 </script>
 
 </body>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ressources — OCEFAMI</title>
-<meta name="description" content="Articles, guides et formations d'OCEFAMI pour équiper les églises, les familles et les jeunes leaders en Haïti.">
+<title>Médias — OCEFAMI</title>
+<meta name="description" content="Les médias OCEFAMI : émissions vidéo et podcast sur la foi, la famille et le leadership en Haïti.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -36,11 +36,11 @@
       <a href="evenements.html">Événements</a>
       <a href="ressources.html">Ressources</a>
       <div class="nav-dropdown">
-        <button type="button" class="dropdown-toggle" id="plusToggle">
+        <button type="button" class="dropdown-toggle" data-dropdown="plus">
           Plus
           <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="dropdown-menu" id="plusMenu">
+        <div class="dropdown-menu" data-dropdown-menu="plus">
           <a href="plus.html#carrieres">Carrières</a>
           <a href="plus.html#partenaires">Espaces Partenaires</a>
           <a href="plus.html#benevolat">Bénévolat</a>
@@ -54,11 +54,11 @@
 </header>
 
 <main>
-  <section class="page-hero" style="background-image:linear-gradient(160deg, rgba(13,42,68,0.90) 0%, rgba(18,58,92,0.85) 60%, rgba(28,74,112,0.80) 100%), url('https://images.unsplash.com/photo-1720534256762-59e251d1ec1b?auto=format&fit=crop&w=1600&q=75');">
+  <section class="page-hero" style="background-image:linear-gradient(160deg, rgba(13,42,68,0.90) 0%, rgba(18,58,92,0.85) 60%, rgba(28,74,112,0.80) 100%), url('https://images.unsplash.com/photo-1493332724047-074a94db1c92?auto=format&fit=crop&w=1600&q=75');">
     <div class="wrap">
-      <p class="breadcrumb"><a href="index.html">Accueil</a> / Ressources</p>
-      <h1>Ressources</h1>
-      <p class="lead">Articles, guides pratiques et formations pour équiper les églises, les familles et les jeunes leaders.</p>
+      <p class="breadcrumb"><a href="index.html">Accueil</a> / Médias</p>
+      <h1>Nos médias</h1>
+      <p class="lead">Émissions vidéo et podcast — des programmes réguliers pensés pour équiper les églises, accompagner les familles et former les jeunes leaders de demain.</p>
     </div>
     <div class="wing-divider">
       <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 40C240 90 480 0 720 30C960 60 1200 10 1440 40V90H0V40Z" fill="#FBF7F0"/></svg>
@@ -67,66 +67,90 @@
 
   <section class="media-section">
     <div class="wrap">
-      <nav class="subnav">
-        <a href="#articles" class="active">Articles</a>
-        <a href="#guides">Guides</a>
-        <a href="#formations">Formations</a>
+
+      <nav class="subnav" id="mediaSubnav">
+        <a href="#emissions" class="active">Émissions</a>
+        <a href="#podcast">Podcast</a>
       </nav>
 
-      <!-- ---------- ARTICLES ---------- -->
-      <div id="articles" style="margin-bottom:96px; scroll-margin-top:90px;">
+      <!-- ============ ÉMISSIONS ============ -->
+      <div id="emissions" style="scroll-margin-top:90px;">
         <div class="section-head" style="margin-bottom:28px;">
-          <p class="eyebrow">Articles</p>
-          <h2>Réflexions & actualités</h2>
+          <p class="eyebrow">Vidéo</p>
+          <h2>Nos émissions</h2>
         </div>
 
-        <div class="articles-list">
-          <a href="article-1.html" class="article-card">
-            <div class="date">
-              <span class="day">02</span>
-              <span class="month">Août</span>
-            </div>
-            <div>
-              <h3>Bienvenue sur le nouveau site d'OCEFAMI</h3>
-              <p>Nous sommes heureux de lancer notre site web, un nouvel espace pour partager notre mission, nos activités et rester connectés avec vous.</p>
-              <span class="read-more">Lire l'article →</span>
-            </div>
-          </a>
-          <!-- Pour ajouter un article, dupliquez le bloc <a class="article-card"> ci-dessus. -->
+        <div style="max-width:860px; margin:0 auto 56px;">
+          <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:18px; box-shadow:0 18px 40px rgba(13,42,68,0.18);">
+            <iframe
+              src="https://www.youtube.com/embed/7Z57n2_xn5A"
+              title="Émission OCEFAMI"
+              style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
         </div>
+
+        <div class="coming-soon">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M8.5 8.5a5 5 0 0 0 0 7"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M5.5 5.5a9 9 0 0 0 0 13"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </div>
+          <h3>D'autres émissions arrivent bientôt</h3>
+          <p>Nous préparons la suite de nos programmes. Suivez-nous sur Facebook pour être informé dès la sortie des prochains épisodes.</p>
+        </div>
+
+        <!-- Quand d'autres épisodes seront prêts, dupliquez le bloc vidéo ci-dessus, ou utilisez des cartes de ce type : -->
+        <!--
+        <div class="media-grid">
+          <div class="media-card">
+            <div class="thumb"><svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/></svg></div>
+            <div class="body">
+              <span class="tag">Épisode 1</span>
+              <h3>Titre de l'épisode</h3>
+              <p>Courte description de l'épisode et de ce dont il est question.</p>
+            </div>
+          </div>
+        </div>
+        -->
       </div>
 
-      <!-- ---------- GUIDES ---------- -->
-      <div id="guides" style="margin-bottom:96px; scroll-margin-top:90px;">
+      <hr class="subsection-divider">
+
+      <!-- ============ PODCAST ============ -->
+      <div id="podcast" style="scroll-margin-top:90px;">
         <div class="section-head" style="margin-bottom:28px;">
-          <p class="eyebrow">Guides</p>
-          <h2>Guides pratiques</h2>
+          <p class="eyebrow">Audio</p>
+          <h2>Notre podcast</h2>
+          <p>Des conversations sur la foi, la famille, le leadership et l'engagement citoyen — pour nourrir et encourager l'Église et la communauté en Haïti.</p>
         </div>
+
         <div class="section-photo">
-          <img src="https://images.unsplash.com/photo-1720534256762-59e251d1ec1b?auto=format&fit=crop&w=1600&q=75" alt="Bible ouverte" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1570786032462-2efc3ca8fccd?auto=format&fit=crop&w=1600&q=75" alt="Louange et adoration" loading="lazy">
         </div>
-        <div class="coming-soon">
-          <div class="icon-wrap">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
-          </div>
-          <h3>Bientôt disponible</h3>
-          <p>Des guides pratiques pour les responsables d'église, les parents et les jeunes leaders seront publiés ici prochainement.</p>
-        </div>
-      </div>
 
-      <!-- ---------- FORMATIONS ---------- -->
-      <div id="formations" style="scroll-margin-top:90px;">
-        <div class="section-head" style="margin-bottom:28px;">
-          <p class="eyebrow">Formations</p>
-          <h2>Se former avec OCEFAMI</h2>
-        </div>
         <div class="coming-soon">
           <div class="icon-wrap">
-            <svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>
           </div>
           <h3>Bientôt disponible</h3>
-          <p>Nos programmes de formation pour les églises et les leaders seront annoncés ici dès leur lancement.</p>
+          <p>Nous préparons le lancement de notre podcast. Revenez bientôt pour découvrir nos premiers épisodes, ou suivez-nous sur Facebook pour être informé du lancement.</p>
         </div>
+
+        <!-- Quand les épisodes seront prêts, remplacez le bloc ci-dessus par des cartes de ce type : -->
+        <!--
+        <div class="media-grid">
+          <div class="media-card">
+            <div class="thumb"><svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/></svg></div>
+            <div class="body">
+              <span class="tag">Épisode 1</span>
+              <h3>Titre de l'épisode</h3>
+              <p>Courte description de l'épisode et de ce dont il est question.</p>
+            </div>
+          </div>
+        </div>
+        -->
       </div>
 
     </div>
@@ -167,7 +191,7 @@
     menuBtn.setAttribute('aria-expanded','false');
   }));
 
-  /* Menus déroulants (Médias, Plus, ...) */
+  /* Menus déroulants (Médias, Plus, ...) — gère tous les .nav-dropdown de la page */
   document.querySelectorAll('.nav-dropdown').forEach(wrapper => {
     const toggle = wrapper.querySelector('.dropdown-toggle');
     const menu = wrapper.querySelector('.dropdown-menu');
@@ -191,17 +215,20 @@
     }
   });
 
-  const subnavLinks = document.querySelectorAll('.subnav a');
-  const sections = ['articles','guides','formations'].map(id => document.getElementById(id));
-  window.addEventListener('scroll', () => {
-    let current = sections[0].id;
-    sections.forEach(sec => {
-      if(window.scrollY >= sec.offsetTop - 140) current = sec.id;
-    });
-    subnavLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-    });
-  });
+  /* Sous-navigation Émissions / Podcast : surligne l'onglet actif selon la section visible */
+  const subnavLinks = document.querySelectorAll('#mediaSubnav a');
+  const subnavSections = ['emissions', 'podcast'].map(id => document.getElementById(id));
+  const setActive = (id) => {
+    subnavLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  };
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    subnavSections.forEach(sec => sec && observer.observe(sec));
+  }
 </script>
 
 </body>
