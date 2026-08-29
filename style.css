@@ -511,3 +511,53 @@ footer .wrap{flex-wrap:wrap; gap:14px;}
 .subsection-divider{
   border:none; border-top:2px dashed #E0D6BE; margin:56px 0;
 }
+
+/* ---------- Numbered form steps ---------- */
+.step-label{
+  display:flex; align-items:center; gap:12px; margin:32px 0 18px;
+}
+.step-label:first-child{margin-top:0;}
+.step-num{
+  width:28px; height:28px; border-radius:50%; background:var(--navy-deep); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:0.82rem; font-weight:700;
+  flex-shrink:0;
+}
+.step-title{font-size:0.98rem; font-weight:700; color:var(--navy-deep); text-transform:none; letter-spacing:0;}
+.step-sub{font-size:0.82rem; color:#7C93A8; margin-top:2px;}
+
+.checkbox-row{
+  display:flex; align-items:flex-start; gap:10px; background:var(--cream);
+  border:1px solid #E0D6BE; border-radius:10px; padding:14px 16px; margin-top:14px;
+}
+.checkbox-row input{margin-top:3px; flex-shrink:0;}
+.checkbox-row label{font-size:0.85rem; color:var(--ink); line-height:1.5;}
+
+.form-divider{border:none; border-top:1px solid #E7DEC9; margin:30px 0;}
+
+/* ---------- Conditional field ---------- */
+.field-hidden{display:none;}
+.field-hidden.show{display:block;}
+
+/* ---------- File field ---------- */
+.field input[type="file"]{
+  background:var(--cream); border:1px dashed #D9CDB0; border-radius:10px;
+  padding:12px 14px; font-family:inherit; font-size:0.88rem; color:var(--ink); cursor:pointer;
+}
+
+/* ---------- Info strip (formation) ---------- */
+.info-strip{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; margin-bottom:56px;
+}
+.info-card{
+  background:#fff; border:1px solid #E7DEC9; border-radius:16px; padding:22px;
+  text-align:center;
+}
+.info-card .k{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--navy-soft); font-weight:700; margin-bottom:8px;}
+.info-card .v{font-family:'Fraunces', serif; font-size:1.15rem; color:var(--navy-deep); font-weight:600;}
+
+@media (max-width:820px){
+  .info-strip{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:480px){
+  .info-strip{grid-template-columns:1fr;}
+}

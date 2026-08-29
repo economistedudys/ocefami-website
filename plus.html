@@ -259,10 +259,18 @@
 
         <div class="form-wrap">
           <h3>Formulaire de bénévolat</h3>
-          <p class="sub">Dites-nous qui vous êtes et comment vous aimeriez vous impliquer — nous vous recontacterons rapidement.</p>
+          <p class="sub">Dites-nous qui vous êtes et comment vous aimeriez vous impliquer. Une fois votre formulaire reçu, nous vous inviterons à planifier un court entretien avec un membre de notre équipe.</p>
 
           <form action="https://formspree.io/f/mbdnngyv" method="POST">
             <input type="hidden" name="_subject" value="Nouvelle candidature bénévole — OCEFAMI">
+
+            <div class="step-label">
+              <span class="step-num">1</span>
+              <div>
+                <div class="step-title">Identité</div>
+                <div class="step-sub">Vos informations personnelles</div>
+              </div>
+            </div>
             <div class="form-grid">
               <div class="field">
                 <label for="v-name">Nom complet</label>
@@ -275,17 +283,78 @@
             </div>
             <div class="form-grid">
               <div class="field">
-                <label for="v-phone">Téléphone</label>
-                <input id="v-phone" type="tel" name="phone">
+                <label for="v-phone">Téléphone (WhatsApp de préférence)</label>
+                <input id="v-phone" type="tel" name="phone" required>
               </div>
               <div class="field">
                 <label for="v-location">Ville / zone</label>
-                <input id="v-location" type="text" name="location" placeholder="Ex: Delmas, Port-au-Prince">
+                <input id="v-location" type="text" name="location" placeholder="Ex: Delmas, Port-au-Prince" required>
+              </div>
+            </div>
+
+            <hr class="form-divider">
+            <div class="step-label">
+              <span class="step-num">2</span>
+              <div>
+                <div class="step-title">Parcours</div>
+                <div class="step-sub">Études, profession et expérience</div>
               </div>
             </div>
             <div class="form-grid">
               <div class="field">
-                <label for="v-skill">Domaine de compétence</label>
+                <label for="v-etudes">Niveau d'études</label>
+                <select id="v-etudes" name="niveau_etudes">
+                  <option>Secondaire</option>
+                  <option>Universitaire (Licence)</option>
+                  <option>Universitaire (Master ou plus)</option>
+                  <option>Formation professionnelle</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="v-profession">Profession / activité actuelle</label>
+                <input id="v-profession" type="text" name="profession" required>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="v-experience">Expérience de travail ou de bénévolat pertinente</label>
+                <input id="v-experience" type="text" name="experience" placeholder="Ex: 3 ans d'enseignement, bénévolat dans une autre ONG...">
+              </div>
+            </div>
+
+            <hr class="form-divider">
+            <div class="step-label">
+              <span class="step-num">3</span>
+              <div>
+                <div class="step-title">Engagement dans l'église</div>
+                <div class="step-sub">Votre implication actuelle</div>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="v-eglise">Église fréquentée (où vous êtes membre assidu)</label>
+                <input id="v-eglise" type="text" name="eglise_frequentee" required>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="v-fonction-eglise">Fonction / responsabilité à l'église (le cas échéant)</label>
+                <input id="v-fonction-eglise" type="text" name="fonction_eglise" placeholder="Ex: Diacre, leader de jeunesse, membre engagé...">
+              </div>
+            </div>
+
+            <hr class="form-divider">
+            <div class="step-label">
+              <span class="step-num">4</span>
+              <div>
+                <div class="step-title">Domaine et disponibilité</div>
+                <div class="step-sub">Comment et quand vous souhaitez vous impliquer</div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="v-skill">Domaine de compétence souhaité</label>
                 <select id="v-skill" name="skill">
                   <option>Enseignement / Éducation</option>
                   <option>Musique / Louange</option>
@@ -308,11 +377,44 @@
             </div>
             <div class="form-grid full">
               <div class="field">
-                <label for="v-message">Parlez-nous de votre motivation</label>
-                <textarea id="v-message" name="message" placeholder="Pourquoi souhaitez-vous devenir bénévole avec OCEFAMI ? Quelles sont vos compétences ou expériences pertinentes ?" required></textarea>
+                <label for="v-duree">Sur quelle durée souhaitez-vous vous engager ?</label>
+                <select id="v-duree" name="duree_engagement">
+                  <option>Moins de 3 mois</option>
+                  <option>3 à 6 mois</option>
+                  <option>6 mois à 1 an</option>
+                  <option>Plus d'un an</option>
+                  <option>À discuter</option>
+                </select>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Envoyer ma candidature</button>
+
+            <hr class="form-divider">
+            <div class="step-label">
+              <span class="step-num">5</span>
+              <div>
+                <div class="step-title">Motivation</div>
+                <div class="step-sub">Aidez-nous à mieux vous connaître</div>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="v-message">Pourquoi souhaitez-vous devenir bénévole avec OCEFAMI ?</label>
+                <textarea id="v-message" name="message" required></textarea>
+              </div>
+            </div>
+            <div class="form-grid full">
+              <div class="field">
+                <label for="v-apport">Qu'aimeriez-vous apporter à travers votre engagement ?</label>
+                <textarea id="v-apport" name="apport"></textarea>
+              </div>
+            </div>
+
+            <div class="checkbox-row">
+              <input type="checkbox" id="v-consent" name="consentement" required>
+              <label for="v-consent">Je certifie l'exactitude des informations fournies et j'autorise OCEFAMI à me contacter, y compris pour planifier un entretien.</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:20px;">Envoyer ma candidature</button>
           </form>
         </div>
       </div>
