@@ -225,7 +225,7 @@
      --------------------------------------------------------- */
   const EVENTS = [
     { date: '2026-10-04', title: 'Formation « Église et Nation » — Séance 1', theme: 'Leadership chrétien — Fondements du leadership chrétien', speaker: 'Docteur Jules Lesly', location: 'En ligne (Zoom)' },
-    { date: '2026-10-10', title: 'Formation « Église et Nation » — Séance 2', theme: 'Patriotisme — Le devoir civique du chrétien', speaker: 'Pasteur Kenny Dorvilus', location: 'En ligne (Zoom)' },
+    { date: '2026-10-10', title: 'Formation « Église et Nation » — Séance 2', theme: 'Patriotisme — Le devoir civique du chrétien', speaker: '', location: 'En ligne (Zoom)' },
     { date: '2026-10-17', title: 'Formation « Église et Nation » — Séance 3', theme: 'Évangélisation — Évangéliser dans le contexte haïtien', speaker: 'Rév. Dr Jean Franck Charles', location: 'En ligne (Zoom)' },
     { date: '2026-10-25', title: 'Formation « Église et Nation » — Séance 4', theme: 'Implication sociale, économique et politique — Le rôle de l\'Église dans la société', speaker: 'Docteur Ernest Dorilas', location: 'En ligne (Zoom)' },
   ];
@@ -301,7 +301,7 @@
           '<div>' +
             '<h4>' + ev.title + '</h4>' +
             '<p><strong>' + ev.theme + '</strong></p>' +
-            '<p>Intervenant : ' + ev.speaker + ' · ' + ev.location + '</p>' +
+            '<p>' + (ev.speaker ? 'Intervenant : ' + ev.speaker + ' · ' : '') + ev.location + '</p>' +
           '</div>';
         list.appendChild(item);
       });
