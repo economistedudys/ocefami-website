@@ -101,7 +101,8 @@
             </div>
           </div>
           <div class="calendar-grid" id="calGrid"></div>
-          <p class="calendar-empty-note" id="calNote">Aucun événement programmé pour l'instant. Revenez bientôt, ou suivez-nous sur Facebook pour les prochaines annonces.</p>
+          <p class="calendar-empty-note" id="calNote" style="display:none;"></p>
+          <div class="event-list" id="calEventList"></div>
         </div>
       </div>
 
@@ -223,10 +224,10 @@
      au format { date: 'AAAA-MM-JJ', title: '...', location: '...' }
      --------------------------------------------------------- */
   const EVENTS = [
-    { date: '2026-10-04', title: 'Formation « Église et Nation » — Séance 1 : Leadership chrétien (Docteur Jules Lesly)', location: 'En ligne (Zoom)' },
-    { date: '2026-10-10', title: 'Formation « Église et Nation » — Séance 2 : Patriotisme, Le devoir civique du chrétien (Pasteur Kenny Dorvilus)', location: 'En ligne (Zoom)' },
-    { date: '2026-10-17', title: 'Formation « Église et Nation » — Séance 3 : Évangélisation, Évangéliser dans le contexte haïtien (Rév. Dr Jean Franck Charles)', location: 'En ligne (Zoom)' },
-    { date: '2026-10-25', title: 'Formation « Église et Nation » — Séance 4 : Implication sociale, économique et politique, Le rôle de l\'Église dans la société (Docteur Ernest Dorilas)', location: 'En ligne (Zoom)' },
+    { date: '2026-10-04', title: 'Formation « Église et Nation » — Séance 1', theme: 'Leadership chrétien — Fondements du leadership chrétien', speaker: 'Docteur Jules Lesly', location: 'En ligne (Zoom)' },
+    { date: '2026-10-10', title: 'Formation « Église et Nation » — Séance 2', theme: 'Patriotisme — Le devoir civique du chrétien', speaker: 'Pasteur Kenny Dorvilus', location: 'En ligne (Zoom)' },
+    { date: '2026-10-17', title: 'Formation « Église et Nation » — Séance 3', theme: 'Évangélisation — Évangéliser dans le contexte haïtien', speaker: 'Rév. Dr Jean Franck Charles', location: 'En ligne (Zoom)' },
+    { date: '2026-10-25', title: 'Formation « Église et Nation » — Séance 4', theme: 'Implication sociale, économique et politique — Le rôle de l\'Église dans la société', speaker: 'Docteur Ernest Dorilas', location: 'En ligne (Zoom)' },
   ];
 
   const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
@@ -280,14 +281,34 @@
       grid.appendChild(el);
     }
 
-    const note = document.getElementById('calNote');
     const monthEvents = EVENTS.filter(e => {
       const d = new Date(e.date);
       return d.getFullYear() === viewDate.getFullYear() && d.getMonth() === viewDate.getMonth();
-    });
-    note.textContent = monthEvents.length
-      ? monthEvents.length + ' événement(s) ce mois-ci — survolez les dates en surbrillance pour les détails.'
-      : "Aucun événement programmé pour ce mois. Revenez bientôt, ou suivez-nous sur Facebook pour les prochaines annonces.";
+    }).sort((a,b) => a.date.localeCompare(b.date));
+
+    const note = document.getElementById('calNote');
+    const list = document.getElementById('calEventList');
+    list.innerHTML = '';
+
+    if (monthEvents.length){
+      note.style.display = 'none';
+      monthEvents.forEach(ev => {
+        const d = new Date(ev.date + 'T00:00:00');
+        const item = document.createElement('div');
+        item.className = 'event-item';
+        item.innerHTML =
+          '<div class="date"><span class="day">' + d.getDate() + '</span><span class="month">' + MONTHS_FR[d.getMonth()].slice(0,3) + '</span></div>' +
+          '<div>' +
+            '<h4>' + ev.title + '</h4>' +
+            '<p><strong>' + ev.theme + '</strong></p>' +
+            '<p>Intervenant : ' + ev.speaker + ' · ' + ev.location + '</p>' +
+          '</div>';
+        list.appendChild(item);
+      });
+    } else {
+      note.style.display = 'block';
+      note.textContent = "Aucun événement programmé pour ce mois. Revenez bientôt, ou suivez-nous sur Facebook pour les prochaines annonces.";
+    }
   }
 
   document.getElementById('calPrev').addEventListener('click', () => {
