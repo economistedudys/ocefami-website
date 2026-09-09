@@ -127,7 +127,7 @@
         </div>
         <div class="pillar">
           <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <span class="tag" style="margin-bottom:8px;">24 OCT. · IMPLICATION SOCIALE, ÉCONOMIQUE ET POLITIQUE</span>
+          <span class="tag" style="margin-bottom:8px;">25 OCT. · IMPLICATION SOCIALE, ÉCONOMIQUE ET POLITIQUE</span>
           <h3>Le rôle de l'Église dans la société</h3>
           <p>Docteur Ernest Dorilas</p>
         </div>
@@ -179,11 +179,7 @@
               <input id="f-date-naissance" type="date" name="date_naissance" required>
             </div>
           </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="f-lieu-naissance">Lieu de naissance</label>
-              <input id="f-lieu-naissance" type="text" name="lieu_naissance" required>
-            </div>
+          <div class="form-grid full">
             <div class="field">
               <label for="f-departement">Département / Ville de résidence</label>
               <input id="f-departement" type="text" name="departement_residence" placeholder="Ex: Ouest, Port-au-Prince" required>
@@ -216,12 +212,6 @@
               <input id="f-ville" type="text" name="ville" required>
             </div>
           </div>
-          <div class="form-grid full">
-            <div class="field">
-              <label for="f-photo">Photo de profil</label>
-              <input id="f-photo" type="file" name="photo_profil" accept="image/*" required>
-            </div>
-          </div>
 
           <hr class="form-divider">
           <div class="step-label">
@@ -233,18 +223,12 @@
           </div>
           <div class="form-grid full">
             <div class="field">
-              <label for="f-etude-1">Étude / diplôme 1</label>
-              <input id="f-etude-1" type="text" name="etude_1" placeholder="Ex: Licence en théologie" required>
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="f-etude-2">Étude / diplôme 2 (optionnel)</label>
-              <input id="f-etude-2" type="text" name="etude_2">
-            </div>
-            <div class="field">
-              <label for="f-etude-3">Étude / diplôme 3 (optionnel)</label>
-              <input id="f-etude-3" type="text" name="etude_3">
+              <label for="f-etude">Niveau d'étude</label>
+              <select id="f-etude" name="niveau_etude" required>
+                <option>Secondaire</option>
+                <option>Universitaire</option>
+                <option>Formation professionnelle</option>
+              </select>
             </div>
           </div>
 
@@ -261,18 +245,8 @@
 
           <div class="form-grid full">
             <div class="field">
-              <label for="f-experience-1">Expérience de travail 1</label>
-              <input id="f-experience-1" type="text" name="experience_1" placeholder="Ex: 5 ans en enseignement" required>
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="f-experience-2">Expérience de travail 2 (optionnel)</label>
-              <input id="f-experience-2" type="text" name="experience_2">
-            </div>
-            <div class="field">
-              <label for="f-experience-3">Expérience de travail 3 (optionnel)</label>
-              <input id="f-experience-3" type="text" name="experience_3">
+              <label for="f-experience">Expérience de travail (nombre d'années)</label>
+              <input id="f-experience" type="number" min="0" name="experience_annees" placeholder="Ex: 5" required>
             </div>
           </div>
 
@@ -357,86 +331,6 @@
           <hr class="form-divider">
           <div class="step-label">
             <span class="step-num">5</span>
-            <div>
-              <div class="step-title">Motivation</div>
-              <div class="step-sub">Aidez-nous à mieux vous connaître</div>
-            </div>
-          </div>
-          <div class="form-grid full">
-            <div class="field">
-              <label for="f-motivation">Pourquoi êtes-vous motivé(e) à participer à cette formation ?</label>
-              <textarea id="f-motivation" name="motivation" required></textarea>
-            </div>
-          </div>
-          <div class="form-grid full">
-            <div class="field">
-              <label for="f-attentes">Qu'attendez-vous concrètement de cette formation pour votre ministère ou votre engagement ?</label>
-              <textarea id="f-attentes" name="attentes"></textarea>
-            </div>
-          </div>
-          <div class="form-grid full">
-            <div class="field">
-              <label for="f-source">Comment avez-vous entendu parler de cette formation ?</label>
-              <select id="f-source" name="source_information">
-                <option>Facebook</option>
-                <option>Instagram</option>
-                <option>TikTok</option>
-                <option>WhatsApp</option>
-                <option>Par mon église</option>
-                <option>Par un ami / une amie</option>
-                <option>Site web OCEFAMI</option>
-                <option>Autre</option>
-              </select>
-            </div>
-          </div>
-
-          <hr class="form-divider">
-          <div class="step-label">
-            <span class="step-num">6</span>
-            <div>
-              <div class="step-title">Réseaux sociaux</div>
-              <div class="step-sub">4 liens disponibles — au moins 3 requis</div>
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="f-facebook">Facebook</label>
-              <input id="f-facebook" type="url" name="facebook" placeholder="https://facebook.com/...">
-            </div>
-            <div class="field">
-              <label for="f-instagram">Instagram</label>
-              <input id="f-instagram" type="url" name="instagram" placeholder="https://instagram.com/...">
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="f-linkedin">LinkedIn</label>
-              <input id="f-linkedin" type="url" name="linkedin" placeholder="https://linkedin.com/in/...">
-            </div>
-            <div class="field">
-              <label for="f-tiktok">TikTok</label>
-              <input id="f-tiktok" type="url" name="tiktok" placeholder="https://tiktok.com/@...">
-            </div>
-          </div>
-
-          <hr class="form-divider">
-          <div class="step-label">
-            <span class="step-num">7</span>
-            <div>
-              <div class="step-title">Documents à joindre</div>
-              <div class="step-sub">Format PDF, Word ou image</div>
-            </div>
-          </div>
-          <div class="form-grid full">
-            <div class="field">
-              <label for="f-cv">Curriculum Vitae (CV)</label>
-              <input id="f-cv" type="file" name="cv" accept=".pdf,.doc,.docx,image/*" required>
-            </div>
-          </div>
-
-          <hr class="form-divider">
-          <div class="step-label">
-            <span class="step-num">8</span>
             <div>
               <div class="step-title">Référence pastorale</div>
               <div class="step-sub">Coordonnées de votre pasteur, pour vérification</div>
@@ -543,16 +437,6 @@
   }
   partiSelect.addEventListener('change', togglePartiField);
   togglePartiField();
-
-  /* Validation : au moins 3 des 4 liens réseaux sociaux doivent être remplis */
-  document.getElementById('inscriptionForm').addEventListener('submit', function(e){
-    const socialFields = ['f-facebook', 'f-instagram', 'f-linkedin', 'f-tiktok'];
-    const filled = socialFields.filter(id => document.getElementById(id).value.trim().length > 0);
-    if (filled.length < 3) {
-      e.preventDefault();
-      alert('Merci de renseigner au moins 3 des 4 liens de réseaux sociaux (Facebook, Instagram, LinkedIn, TikTok).');
-    }
-  });
 </script>
 
 </body>
