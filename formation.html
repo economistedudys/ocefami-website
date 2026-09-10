@@ -550,6 +550,18 @@
 
   updateCountdown();
   const countdownInterval = setInterval(updateCountdown, 1000);
+
+  /* Empêcher la double soumission (double-clic, double-envoi accidentel) */
+  const regForm = document.getElementById('inscriptionForm');
+  if (regForm) {
+    regForm.addEventListener('submit', function () {
+      const btn = regForm.querySelector('button[type="submit"]');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Envoi en cours...';
+      }
+    });
+  }
 </script>
 
 </body>
