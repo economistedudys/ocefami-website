@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prise de présence — OCEFAMI</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<meta name="description" content="Prise de présence — Formation Église et Nation, OCEFAMI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0D2A44; --navy:#123A5C; --navy-soft:#1C4A70;
+    --apricot:#F0912A; --cream:#FBF7F0; --ink:#16324A; --grey:#5C7285;
+    box-sizing:border-box;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Inter',sans-serif; background:var(--navy-deep); color:var(--ink);
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .card{
+    background:#fff; border-radius:20px; max-width:480px; width:100%;
+    padding:36px 32px; box-shadow:0 20px 60px rgba(0,0,0,0.35);
+    text-align:center;
+  }
+  .logo{ max-width:200px; margin-bottom:22px; }
+  h1{ font-family:'Fraunces',serif; font-size:1.5rem; color:var(--navy-deep); margin:0 0 6px; }
+  .sub{ color:var(--grey); font-size:0.95rem; margin-bottom:26px; }
+  .badge{
+    display:inline-block; background:var(--apricot); color:#fff; font-weight:700;
+    font-size:0.8rem; letter-spacing:0.04em; padding:8px 18px; border-radius:999px; margin-bottom:18px;
+  }
+  .field{ text-align:left; margin-bottom:16px; }
+  label{ display:block; font-weight:600; font-size:0.85rem; color:var(--navy-deep); margin-bottom:6px; }
+  input{
+    width:100%; padding:12px 14px; border:1.5px solid #E3E8EC; border-radius:10px;
+    font-family:'Inter',sans-serif; font-size:0.95rem; color:var(--ink);
+  }
+  input:focus{ outline:none; border-color:var(--apricot); }
+  button{
+    width:100%; background:var(--apricot); color:#fff; border:none; border-radius:999px;
+    padding:14px; font-weight:700; font-size:1rem; cursor:pointer; margin-top:6px;
+    font-family:'Inter',sans-serif;
+  }
+  button:hover{ background:#D97E1E; }
+  .closed{ padding:20px 0; }
+  .closed .icon{ font-size:2.4rem; margin-bottom:12px; }
+  .closed p{ color:var(--grey); line-height:1.5; }
+  .success{ padding:20px 0; }
+  .success .icon{ font-size:2.6rem; margin-bottom:12px; }
+  .success h2{ font-family:'Fraunces',serif; color:var(--navy-deep); margin:0 0 8px; }
+  .success p{ color:var(--grey); line-height:1.5; }
+  footer{ margin-top:22px; font-size:0.78rem; color:var(--grey); }
+  .hidden{ display:none; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <img class="logo" src="assets/logo.png" alt="OCEFAMI">
+
+  <div id="loading"><p class="sub">Vérification de l'heure…</p></div>
+
+  <div id="closed-state" class="closed hidden">
+    <div class="icon">⏳</div>
+    <h1>Prise de présence non active</h1>
+    <p>Ce lien s'active automatiquement <strong>10 minutes avant la fin</strong> de chaque séance, et reste ouvert pendant <strong>20 minutes</strong>. Revenez un peu plus tard, ou vérifiez l'heure de la séance en cours.</p>
+  </div>
+
+  <div id="form-state" class="hidden">
+    <span class="badge" id="seance-badge">SÉANCE</span>
+    <h1>Prise de présence</h1>
+    <p class="sub">Confirmez votre participation à cette séance pour recevoir votre certificat.</p>
+
+    <form id="attendanceForm" action="https://formspree.io/f/mbdnngyv" method="POST">
+      <input type="hidden" name="_subject" id="subjectField" value="">
+      <input type="hidden" name="seance" id="seanceField" value="">
+      <div class="field">
+        <label for="f-nom">Nom complet</label>
+        <input id="f-nom" type="text" name="nom_complet" required>
+      </div>
+      <div class="field">
+        <label for="f-email">Email (celui utilisé à l'inscription)</label>
+        <input id="f-email" type="email" name="email" required>
+      </div>
+      <button type="submit">Confirmer ma présence</button>
+    </form>
+  </div>
+
+  <div id="success-state" class="success hidden">
+    <div class="icon">✅</div>
+    <h2>Présence enregistrée !</h2>
+    <p>Merci, votre présence a bien été prise en compte pour cette séance.</p>
+  </div>
+
+  <footer>OCEFAMI · Formation « Église et Nation »</footer>
+</div>
+
+<script>
+  // Fenêtres de présence : 10 min avant la fin de chaque séance, actives 20 min.
+  // Heure d'Haïti (UTC-4).
+  const SEANCES = [
+    { nom: "Séance 1 — 4 octobre 2026", open: "2026-10-04T15:50:00-04:00", close: "2026-10-04T16:10:00-04:00" },
+    { nom: "Séance 2 — 10 octobre 2026", open: "2026-10-10T15:50:00-04:00", close: "2026-10-10T16:10:00-04:00" },
+    { nom: "Séance 3 — 17 octobre 2026", open: "2026-10-17T15:50:00-04:00", close: "2026-10-17T16:10:00-04:00" },
+    { nom: "Séance 4 — 25 octobre 2026", open: "2026-10-25T16:50:00-04:00", close: "2026-10-25T17:10:00-04:00" },
+  ];
+
+  function findActiveSeance() {
+    const now = new Date();
+    for (const s of SEANCES) {
+      if (now >= new Date(s.open) && now <= new Date(s.close)) return s;
+    }
+    return null;
+  }
+
+  const loading = document.getElementById('loading');
+  const closedState = document.getElementById('closed-state');
+  const formState = document.getElementById('form-state');
+  const successState = document.getElementById('success-state');
+  const badge = document.getElementById('seance-badge');
+  const subjectField = document.getElementById('subjectField');
+  const seanceField = document.getElementById('seanceField');
+
+  loading.classList.add('hidden');
+  const active = findActiveSeance();
+
+  if (active) {
+    formState.classList.remove('hidden');
+    badge.textContent = active.nom.toUpperCase();
+    subjectField.value = "Prise de présence — " + active.nom;
+    seanceField.value = active.nom;
+  } else {
+    closedState.classList.remove('hidden');
+  }
+
+  document.getElementById('attendanceForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const btn = form.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours...';
+    fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      if (response.ok) {
+        formState.classList.add('hidden');
+        successState.classList.remove('hidden');
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Confirmer ma présence';
+        alert("Une erreur est survenue. Merci de réessayer.");
+      }
+    }).catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Confirmer ma présence';
+      alert("Une erreur est survenue. Merci de réessayer.");
+    });
+  });
+</script>
+
+</body>
+</html>
