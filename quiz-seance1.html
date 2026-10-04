@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz — Séance 1 — OCEFAMI</title>
+<style>
+  :root{
+    --navy-deep:#0D2A44; --navy:#123A5C; --navy-soft:#1C4A70;
+    --apricot:#F0912A; --cream:#FBF7F0; --ink:#16324A; --grey:#5C7285;
+    --ok:#2E9E5B; --bad:#C94B3F;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--navy-deep); color:var(--ink); min-height:100%;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --cream:#132433; --ink:#E7EEF3; --grey:#9FB2C2; }
+  }
+  :root[data-theme="dark"]{ --cream:#132433; --ink:#E7EEF3; --grey:#9FB2C2; }
+
+  .wrap{ max-width:640px; margin:0 auto; padding:28px 18px 60px; }
+  .top-logo{
+    text-align:center; margin-bottom:22px;
+  }
+  .top-logo .badge{
+    display:inline-block; background:var(--apricot); color:#fff; font-weight:700;
+    font-size:0.78rem; letter-spacing:0.05em; padding:7px 16px; border-radius:999px;
+  }
+  h1{
+    color:#fff; text-align:center; font-size:1.5rem; margin:14px 0 4px; font-family:Georgia,serif;
+  }
+  .sub{ color:#B9CBDA; text-align:center; font-size:0.92rem; margin-bottom:26px; }
+
+  .card{
+    background:var(--cream); border-radius:18px; padding:24px 20px; margin-bottom:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  }
+  label{ display:block; font-weight:600; font-size:0.88rem; color:var(--ink); margin-bottom:6px; }
+  input[type=text], input[type=email]{
+    width:100%; padding:12px 14px; border:1.5px solid #D9E0E6; border-radius:10px;
+    font-size:0.95rem; color:var(--ink); background:#fff; margin-bottom:16px;
+  }
+  input:focus{ outline:none; border-color:var(--apricot); }
+
+  .q-num{
+    display:inline-block; background:var(--navy-deep); color:#fff; font-weight:700;
+    font-size:0.78rem; padding:4px 11px; border-radius:999px; margin-bottom:10px;
+  }
+  .q-text{ font-weight:700; color:var(--ink); margin-bottom:14px; line-height:1.4; }
+  .opt{
+    display:flex; align-items:flex-start; gap:10px; padding:11px 13px; border-radius:10px;
+    border:1.5px solid #E3E8EC; margin-bottom:8px; cursor:pointer; background:#fff;
+  }
+  .opt:hover{ border-color:var(--apricot); }
+  .opt input{ margin-top:3px; }
+  .opt.selected{ border-color:var(--apricot); background:#FFF3E6; }
+  .opt span{ font-size:0.92rem; color:var(--ink); }
+
+  button{
+    width:100%; background:var(--apricot); color:#fff; border:none; border-radius:999px;
+    padding:15px; font-weight:700; font-size:1rem; cursor:pointer; font-family:inherit;
+  }
+  button:disabled{ opacity:0.6; }
+  button:hover:not(:disabled){ background:#D97E1E; }
+
+  .result{ text-align:center; padding:10px 0; }
+  .result .icon{ font-size:2.8rem; margin-bottom:10px; }
+  .result h2{ font-family:Georgia,serif; color:var(--ink); margin:0 0 6px; }
+  .result .score{ font-size:2.2rem; font-weight:800; margin:10px 0; }
+  .result.pass .score{ color:var(--ok); }
+  .result.fail .score{ color:var(--bad); }
+  .result p{ color:var(--grey); line-height:1.5; }
+  .attempts{ font-size:0.82rem; color:var(--grey); text-align:center; margin-top:10px; }
+
+  .hidden{ display:none !important; }
+  footer{ text-align:center; color:#8FA6BC; font-size:0.78rem; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top-logo">
+    <span class="badge">SÉANCE 1 — QUIZ</span>
+    <h1>Fondements du leadership chrétien</h1>
+    <p class="sub">Docteur Jules Lesly · 10 questions · 3 tentatives autorisées</p>
+  </div>
+
+  <!-- ÉTAPE IDENTITÉ -->
+  <div class="card" id="identity-card">
+    <label for="f-nom">Nom complet</label>
+    <input id="f-nom" type="text" placeholder="Votre nom et prénom">
+    <label for="f-email">Email (celui utilisé à l'inscription)</label>
+    <input id="f-email" type="email" placeholder="vous@email.com">
+    <button id="startBtn">Commencer le quiz →</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <form id="quizForm" class="hidden"></form>
+
+  <div class="card hidden" id="submit-card">
+    <button id="submitBtn">Valider mes réponses</button>
+    <p class="attempts" id="attemptsNote"></p>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="card hidden" id="result-card">
+    <div class="result" id="resultInner"></div>
+  </div>
+
+  <footer>OCEFAMI · Formation « Église et Nation »</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Selon le Docteur Jules Lesly, tout homme peut être influent dans tous les domaines de sa vie.",
+    opts: ["Vrai", "Faux"],
+    correct: 0
+  },
+  {
+    q: "Quel verset biblique affirme : « À celui à qui on a beaucoup confié, on exigera beaucoup » ?",
+    opts: ["Luc 12:47", "Jean 11:2", "Marc 12:48", "Luc 12:48"],
+    correct: 3
+  },
+  {
+    q: "Combien de responsabilités de l'administrateur le Docteur Lesly a-t-il présentées ?",
+    opts: ["Deux", "Trois", "Quatre", "Cinq"],
+    correct: 1
+  },
+  {
+    q: "Laquelle de ces propositions n'est PAS une responsabilité de l'administrateur selon l'enseignement ?",
+    opts: [
+      "Maximiser les ressources par la multiplication",
+      "Minimiser le chaos par l'assujettissement",
+      "Maintenir l'ordre par la domination",
+      "Multiplier le chaos par la soumission"
+    ],
+    correct: 3
+  },
+  {
+    q: "Comment maximise-t-on les ressources, selon l'enseignement ?",
+    opts: ["Par l'accumulation", "Par la multiplication", "Par la domination", "Par l'assujettissement"],
+    correct: 1
+  },
+  {
+    q: "Comment minimise-t-on le chaos, selon l'enseignement ?",
+    opts: ["Par la multiplication", "Par l'assujettissement", "Par la reconnaissance", "Par la vision partagée"],
+    correct: 1
+  },
+  {
+    q: "Comment maintient-on l'ordre, selon l'enseignement ?",
+    opts: ["Par le partage", "Par la multiplication", "Par la domination", "Par l'assujettissement"],
+    correct: 2
+  },
+  {
+    q: "Lesquels de ces éléments sont impliqués dans le fait de « maximiser » les ressources ?",
+    opts: [
+      "Reconnaissance, partage, vision partagée de l'actualisation du potentiel",
+      "Contrôle, autorité, soumission",
+      "Richesse, pouvoir, influence",
+      "Prière, jeûne, méditation"
+    ],
+    correct: 0
+  },
+  {
+    q: "En référence à Maslow, que peuvent faire les personnes en situation de pauvreté, selon le Docteur Lesly ?",
+    opts: [
+      "Rien, tant que leur situation matérielle ne change pas",
+      "Attendre une aide extérieure",
+      "Rêver et avancer, dès qu'elles s'approprient leurs problèmes pour se prendre en main",
+      "Se résigner à leur condition"
+    ],
+    correct: 2
+  },
+  {
+    q: "Quelle question reste ouverte concernant le fait de « minimiser le chaos » ?",
+    opts: [
+      "Combien de temps cela prend-il ?",
+      "Quel compromis, quel prix sommes-nous prêts à payer ?",
+      "Qui doit s'en charger ?",
+      "Est-ce vraiment nécessaire ?"
+    ],
+    correct: 1
+  }
+];
+
+const PASS_THRESHOLD = 0.7; // 70% pour réussir, soit 7/10
+const MAX_ATTEMPTS = 3;
+const STORAGE_KEY = "ocefami_quiz_seance1_attempts";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mbdnngyv";
+
+let userName = "", userEmail = "";
+
+function getAttempts(){
+  try { return parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10); } catch(e){ return 0; }
+}
+function incAttempts(){
+  try { localStorage.setItem(STORAGE_KEY, String(getAttempts() + 1)); } catch(e){}
+}
+
+function buildForm(){
+  const form = document.getElementById('quizForm');
+  form.innerHTML = "";
+  QUESTIONS.forEach((item, qi) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const num = document.createElement('div');
+    num.className = 'q-num';
+    num.textContent = 'Question ' + (qi + 1) + ' / 10';
+    card.appendChild(num);
+    const qText = document.createElement('div');
+    qText.className = 'q-text';
+    qText.textContent = item.q;
+    card.appendChild(qText);
+    item.opts.forEach((opt, oi) => {
+      const label = document.createElement('label');
+      label.className = 'opt';
+      label.innerHTML = '<input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + opt + '</span>';
+      const input = label.querySelector('input');
+      input.addEventListener('change', () => {
+        card.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+        label.classList.add('selected');
+      });
+      card.appendChild(label);
+    });
+    form.appendChild(card);
+  });
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  userName = document.getElementById('f-nom').value.trim();
+  userEmail = document.getElementById('f-email').value.trim();
+  if (!userName || !userEmail) {
+    alert("Merci de renseigner votre nom et votre email avant de commencer.");
+    return;
+  }
+  const attempts = getAttempts();
+  if (attempts >= MAX_ATTEMPTS) {
+    document.getElementById('identity-card').classList.add('hidden');
+    showResult(null, true);
+    return;
+  }
+  document.getElementById('identity-card').classList.add('hidden');
+  document.getElementById('quizForm').classList.remove('hidden');
+  document.getElementById('submit-card').classList.remove('hidden');
+  document.getElementById('attemptsNote').textContent =
+    "Tentative " + (attempts + 1) + " / " + MAX_ATTEMPTS;
+  buildForm();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  let answered = 0;
+  let score = 0;
+  QUESTIONS.forEach((item, qi) => {
+    const sel = document.querySelector('input[name="q' + qi + '"]:checked');
+    if (sel) {
+      answered++;
+      if (parseInt(sel.value, 10) === item.correct) score++;
+    }
+  });
+  if (answered < QUESTIONS.length) {
+    alert("Merci de répondre à toutes les questions avant de valider (" + answered + "/10 répondues).");
+    return;
+  }
+  incAttempts();
+  showResult(score, false);
+  submitToFormspree(score);
+});
+
+function showResult(score, blocked){
+  document.getElementById('quizForm').classList.add('hidden');
+  document.getElementById('submit-card').classList.add('hidden');
+  const resultCard = document.getElementById('result-card');
+  resultCard.classList.remove('hidden');
+  const inner = document.getElementById('resultInner');
+
+  if (blocked) {
+    inner.className = 'result fail';
+    inner.innerHTML =
+      '<div class="icon">🚫</div>' +
+      '<h2>Nombre de tentatives atteint</h2>' +
+      '<p>Vous avez déjà utilisé vos ' + MAX_ATTEMPTS + ' tentatives pour ce quiz. ' +
+      'Contactez l\'équipe OCEFAMI à contacts@ocefami.org si vous pensez qu\'il s\'agit d\'une erreur.</p>';
+    return;
+  }
+
+  const pct = score / QUESTIONS.length;
+  const passed = pct >= PASS_THRESHOLD;
+  inner.className = 'result ' + (passed ? 'pass' : 'fail');
+  inner.innerHTML =
+    '<div class="icon">' + (passed ? '✅' : '📚') + '</div>' +
+    '<h2>' + (passed ? 'Félicitations !' : 'Pas encore...') + '</h2>' +
+    '<div class="score">' + score + ' / ' + QUESTIONS.length + '</div>' +
+    '<p>' + (passed
+      ? 'Vous avez réussi le quiz de la Séance 1. Votre résultat a été transmis à l\'équipe OCEFAMI.'
+      : 'Le seuil de réussite est de 7/10. Il vous reste ' + Math.max(0, MAX_ATTEMPTS - getAttempts()) + ' tentative(s).') +
+    '</p>';
+}
+
+function submitToFormspree(score){
+  const data = new FormData();
+  data.append('_subject', 'Quiz Séance 1 — ' + userName);
+  data.append('nom_complet', userName);
+  data.append('email', userEmail);
+  data.append('seance', 'Séance 1 — Fondements du leadership chrétien');
+  data.append('score', score + ' / ' + QUESTIONS.length);
+  data.append('reussi', (score / QUESTIONS.length) >= PASS_THRESHOLD ? 'Oui' : 'Non');
+  data.append('tentative_numero', String(getAttempts()));
+
+  fetch(FORMSPREE_ENDPOINT, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  }).catch(() => { /* échec silencieux : le résultat reste affiché à l'écran */ });
+}
+</script>
+
+</body>
+</html>
