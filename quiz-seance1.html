@@ -88,7 +88,7 @@
   <div class="top-logo">
     <span class="badge">SÉANCE 1 — QUIZ</span>
     <h1>Fondements du leadership chrétien</h1>
-    <p class="sub">Docteur Jules Lesly · 10 questions · 3 tentatives autorisées</p>
+    <p class="sub">Docteur Jules Lesly · 10 questions · 1 seul essai autorisé</p>
   </div>
 
   <!-- ÉTAPE IDENTITÉ -->
@@ -191,7 +191,7 @@ const QUESTIONS = [
 ];
 
 const PASS_THRESHOLD = 0.7; // 70% pour réussir, soit 7/10
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 1;
 const STORAGE_KEY = "ocefami_quiz_seance1_attempts";
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mbdnngyv";
 
@@ -286,7 +286,7 @@ function showResult(score, blocked){
     inner.innerHTML =
       '<div class="icon">🚫</div>' +
       '<h2>Nombre de tentatives atteint</h2>' +
-      '<p>Vous avez déjà utilisé vos ' + MAX_ATTEMPTS + ' tentatives pour ce quiz. ' +
+      '<p>Vous avez déjà utilisé ' + (MAX_ATTEMPTS === 1 ? 'votre seule tentative' : 'vos ' + MAX_ATTEMPTS + ' tentatives') + ' pour ce quiz. ' +
       'Contactez l\'équipe OCEFAMI à contacts@ocefami.org si vous pensez qu\'il s\'agit d\'une erreur.</p>';
     return;
   }
@@ -300,7 +300,9 @@ function showResult(score, blocked){
     '<div class="score">' + score + ' / ' + QUESTIONS.length + '</div>' +
     '<p>' + (passed
       ? 'Vous avez réussi le quiz de la Séance 1. Votre résultat a été transmis à l\'équipe OCEFAMI.'
-      : 'Le seuil de réussite est de 7/10. Il vous reste ' + Math.max(0, MAX_ATTEMPTS - getAttempts()) + ' tentative(s).') +
+      : (MAX_ATTEMPTS - getAttempts() > 0
+          ? 'Le seuil de réussite est de 7/10. Il vous reste ' + (MAX_ATTEMPTS - getAttempts()) + ' tentative(s).'
+          : 'Le seuil de réussite est de 7/10. Cet essai étant le seul autorisé, contactez l\'équipe OCEFAMI à contacts@ocefami.org si vous souhaitez en discuter.')) +
     '</p>';
 }
 
