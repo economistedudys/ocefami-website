@@ -65,7 +65,7 @@
   <div id="closed-state" class="closed hidden">
     <div class="icon">⏳</div>
     <h1>Prise de présence non active</h1>
-    <p>Ce lien s'active automatiquement <strong>vers la fin</strong> de chaque séance, pour une <strong>fenêtre de 20 minutes</strong>. Revenez un peu plus tard, ou vérifiez l'heure de la séance en cours.</p>
+    <p>Ce lien s'active automatiquement <strong>vers la fin</strong> de chaque séance, pour une durée limitée. Revenez un peu plus tard, ou vérifiez l'heure de la séance en cours.</p>
   </div>
 
   <div id="form-state" class="hidden">
@@ -73,7 +73,7 @@
     <h1>Prise de présence</h1>
     <p class="sub">Confirmez votre participation à cette séance pour recevoir votre certificat.</p>
 
-    <form id="attendanceForm" action="https://formspree.io/f/mbdnngyv" method="POST">
+    <form id="attendanceForm" action="https://script.google.com/macros/s/AKfycbwBe3xuwwAITQnPzlc152UPl9_pGZ0vmnUlGSuWoG-_YR8J83hLY9x3HroGfZmm01qJ/exec" method="POST">
       <input type="hidden" name="_subject" id="subjectField" value="">
       <input type="hidden" name="seance" id="seanceField" value="">
       <div class="field">
@@ -104,7 +104,7 @@
     { nom: "Séance 1 — 4 octobre 2026", open: "2026-10-04T15:50:00-04:00", close: "2026-10-04T16:10:00-04:00" },
     { nom: "Séance 2 — 10 octobre 2026", open: "2026-10-10T15:50:00-04:00", close: "2026-10-10T16:10:00-04:00" },
     { nom: "Séance 3 — 17 octobre 2026", open: "2026-10-17T15:30:00-04:00", close: "2026-10-17T15:50:00-04:00" },
-    { nom: "Séance 4 — 25 octobre 2026", open: "2026-10-25T16:50:00-04:00", close: "2026-10-25T17:10:00-04:00" },
+    { nom: "Séance 4 — 25 octobre 2026", open: "2026-10-25T16:50:00-04:00", close: "2026-10-25T17:30:00-04:00" },
   ];
 
   function findActiveSeance() {
@@ -146,8 +146,8 @@
       method: 'POST',
       body: data,
       headers: { 'Accept': 'application/json' }
-    }).then(response => {
-      if (response.ok) {
+    }).then(response => response.json().then(result => ({ ok: response.ok, result }))).then(({ ok, result }) => {
+      if (ok && result.ok) {
         formState.classList.add('hidden');
         successState.classList.remove('hidden');
       } else {

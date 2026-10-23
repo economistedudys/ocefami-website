@@ -255,11 +255,12 @@
         body: data,
         headers: { 'Accept': 'application/json' }
       });
-      if (res.ok) {
+      const result = await res.json();
+      if (res.ok && result.ok) {
         form.style.display = 'none';
         document.getElementById('successMsg').style.display = 'block';
       } else {
-        throw new Error('Erreur réseau');
+        throw new Error(result.error || 'Erreur réseau');
       }
     } catch (err) {
       alert("Une erreur s'est produite. Merci de réessayer, ou de nous contacter directement à contacts@ocefami.org.");
