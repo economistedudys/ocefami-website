@@ -72,26 +72,7 @@
     <span class="badge" id="seance-badge">SÉANCE</span>
     <h1>Prise de présence</h1>
     <p class="sub">Confirmez votre participation à cette séance pour recevoir votre certificat.</p>
-
-    <form id="attendanceForm" action="https://script.google.com/macros/s/AKfycbwBe3xuwwAITQnPzlc152UPl9_pGZ0vmnUlGSuWoG-_YR8J83hLY9x3HroGfZmm01qJ/exec" method="POST">
-      <input type="hidden" name="_subject" id="subjectField" value="">
-      <input type="hidden" name="seance" id="seanceField" value="">
-      <div class="field">
-        <label for="f-nom">Nom complet</label>
-        <input id="f-nom" type="text" name="nom_complet" required>
-      </div>
-      <div class="field">
-        <label for="f-email">Email (celui utilisé à l'inscription)</label>
-        <input id="f-email" type="email" name="email" required>
-      </div>
-      <button type="submit">Confirmer ma présence</button>
-    </form>
-  </div>
-
-  <div id="success-state" class="success hidden">
-    <div class="icon">✅</div>
-    <h2>Présence enregistrée !</h2>
-    <p>Merci, votre présence a bien été prise en compte pour cette séance.</p>
+    <a id="zohoLink" href="https://forms.zohopublic.com/contactsoce1/form/Attendance/formperma/d03uXFPcuLcvd766N6QXIy0HpsuPM6P6NcwKtDw0kLE" target="_blank" rel="noopener" style="display:block; width:100%; background:var(--apricot); color:#fff; border:none; border-radius:999px; padding:14px; font-weight:700; font-size:1rem; text-decoration:none; font-family:'Inter',sans-serif; margin-top:6px;">Confirmer ma présence →</a>
   </div>
 
   <footer>OCEFAMI · Formation « Église et Nation »</footer>
@@ -118,10 +99,7 @@
   const loading = document.getElementById('loading');
   const closedState = document.getElementById('closed-state');
   const formState = document.getElementById('form-state');
-  const successState = document.getElementById('success-state');
   const badge = document.getElementById('seance-badge');
-  const subjectField = document.getElementById('subjectField');
-  const seanceField = document.getElementById('seanceField');
 
   loading.classList.add('hidden');
   const active = findActiveSeance();
@@ -129,38 +107,9 @@
   if (active) {
     formState.classList.remove('hidden');
     badge.textContent = active.nom.toUpperCase();
-    subjectField.value = "Prise de présence — " + active.nom;
-    seanceField.value = active.nom;
   } else {
     closedState.classList.remove('hidden');
   }
-
-  document.getElementById('attendanceForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-    const btn = form.querySelector('button');
-    btn.disabled = true;
-    btn.textContent = 'Envoi en cours...';
-    fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    }).then(response => response.json().then(result => ({ ok: response.ok, result }))).then(({ ok, result }) => {
-      if (ok && result.ok) {
-        formState.classList.add('hidden');
-        successState.classList.remove('hidden');
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'Confirmer ma présence';
-        alert("Une erreur est survenue. Merci de réessayer.");
-      }
-    }).catch(() => {
-      btn.disabled = false;
-      btn.textContent = 'Confirmer ma présence';
-      alert("Une erreur est survenue. Merci de réessayer.");
-    });
-  });
 </script>
 
 </body>
