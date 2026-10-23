@@ -78,6 +78,7 @@
         <a href="#articles" class="active">Articles</a>
         <a href="#guides">Guides</a>
         <a href="#formations">Formations</a>
+        <a href="#temoignages">Témoignages</a>
       </nav>
 
       <!-- ---------- ARTICLES ---------- -->
@@ -185,6 +186,26 @@
         </div>
       </div>
 
+      <!-- ---------- TÉMOIGNAGES ---------- -->
+      <div id="temoignages" style="scroll-margin-top:90px; margin-top:96px;">
+        <div class="section-head" style="margin-bottom:28px;">
+          <p class="eyebrow">Témoignages</p>
+          <h2>Ce que disent les participants</h2>
+        </div>
+        <div class="media-grid">
+          <a href="temoignages-publies.html" style="text-decoration:none;">
+            <div class="media-card">
+              <div class="thumb" style="background-image:linear-gradient(160deg, rgba(13,42,68,0.55), rgba(28,74,112,0.35)), url('https://images.unsplash.com/photo-1601747779082-77a8fe377ecc?auto=format&fit=crop&w=800&q=75'); background-size:cover; background-position:center;"></div>
+              <div class="body">
+                <span class="tag">Témoignages</span>
+                <h3>Ce que la formation a changé pour eux</h3>
+                <p>Découvrez les témoignages des participants à « Église et Nation », et partagez le vôtre si vous avez suivi la formation.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
     </div>
   </section>
 </main>
@@ -248,7 +269,7 @@
   });
 
   const subnavLinks = document.querySelectorAll('.subnav a');
-  const sections = ['articles','guides','formations'].map(id => document.getElementById(id));
+  const sections = ['articles','guides','formations','temoignages'].map(id => document.getElementById(id));
   window.addEventListener('scroll', () => {
     let current = sections[0].id;
     sections.forEach(sec => {
