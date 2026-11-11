@@ -47,6 +47,24 @@
   .fn-btn.coral{background:#CC4B2E;} .fn-btn.coral:hover{background:#B13E24;}
   .fn-btn.teal{background:#0B5A5E;} .fn-btn.teal:hover{background:#073F42;}
   .fn-sign{margin-top:26px;} .fn-sign b{display:block; font-family:Fraunces, Georgia, serif; color:#0B5A5E; font-size:1.1rem;} .fn-sign span{color:#7C93A8; font-size:.9rem;}
+  .fn-or{margin:16px 0 0 0 !important; font-size:.95rem !important; color:#33506A;}
+  .fn-or a{color:#0B5A5E; font-weight:700; text-decoration:underline;}
+  .fn-copy{margin-left:8px; padding:6px 14px; border-radius:999px; border:1.5px solid #0B5A5E; background:#fff; color:#0B5A5E; font-weight:700; font-size:.85rem; cursor:pointer;}
+  .fn-copy:hover{background:#0B5A5E; color:#fff;}
+  .fn-form{display:grid; grid-template-columns:1fr 1fr; gap:14px; text-align:left; margin-top:6px;}
+  .fn-form label{display:block; font-size:.88rem; font-weight:600; color:#073F42;}
+  .fn-form .full{grid-column:1 / -1;}
+  .fn-form input[type=text],.fn-form input[type=tel],.fn-form input[type=email],.fn-form input[type=number],.fn-form select,.fn-form textarea{display:block; width:100%; margin-top:5px; padding:11px 12px; border:1.5px solid #B7D4CE; border-radius:10px; font:inherit; font-size:1rem; color:#16324A; background:#fff;}
+  .fn-form input:focus,.fn-form select:focus,.fn-form textarea:focus{outline:2px solid #0B5A5E; border-color:#0B5A5E;}
+  .fn-form fieldset{border:1.5px solid #B7D4CE; border-radius:10px; padding:10px 14px 4px; background:#fff;}
+  .fn-form legend{font-size:.88rem; font-weight:600; color:#073F42; padding:0 6px;}
+  .fn-form .chk{display:flex; align-items:flex-start; gap:8px; font-weight:500; margin:0 0 8px 0; color:#16324A;}
+  .fn-form .chk input{margin-top:4px; width:18px; height:18px; flex:none;}
+  .fn-result{margin-top:18px; text-align:left; background:#fff; border-radius:12px; padding:16px;}
+  .fn-result p{font-size:.95rem !important; margin-bottom:10px !important;}
+  .fn-result textarea{width:100%; font:inherit; font-size:.9rem; padding:10px; border:1.5px solid #B7D4CE; border-radius:10px; color:#16324A;}
+  .fn-result .fn-copy{margin:10px 0 0 0;}
+  @media(max-width:560px){ .fn-form{grid-template-columns:1fr;} }
   @media(max-width:560px){ .fn-tiers{grid-template-columns:1fr;} }
 </style>
 </head>
@@ -128,24 +146,42 @@
         <h2 class="fn-h2">Comment se déroulera-t-elle ?</h2>
         <p>La formation sera retransmise simultanément dans une vingtaine d'églises partenaires, qui accueilleront leurs familles dans leur propre salle. Les intervenants répondront en direct aux questions de chaque église. Le programme abordera la crise de la famille haïtienne, les valeurs et l'éducation des enfants, la place de la famille dans la nouvelle Haïti et le rôle de l'Église, avant un temps d'engagement : chaque église repartira avec un plan d'action pour ses familles. L'horaire détaillé et le programme complet seront communiqués prochainement.</p>
 
-        <div class="fn-box">
-          <h3>Votre église souhaite accueillir cette formation ?</h3>
-          <p>Écrivez-nous en indiquant le nom de votre église, de votre pasteur et de la ville. Les églises retenues devront disposer d'une salle, d'un écran ou projecteur, d'une connexion internet et d'un coordinateur local.</p>
-          <a class="fn-btn teal" href="mailto:contacts@ocefami.org?subject=%C3%89glise%20h%C3%B4te%20%E2%80%94%20Famille%20et%20Nation&body=Nom%20de%20l'%C3%A9glise%20%3A%0D%0ANom%20du%20pasteur%20%3A%0D%0AVille%20%3A%0D%0ACoordinateur%20local%20%3A">Proposer mon église</a>
+        <div class="fn-box" id="inscription">
+          <h3>Inscription des églises</h3>
+          <p>Votre église souhaite accueillir cette formation ? Remplissez ce formulaire. Les églises retenues devront disposer d'une salle, d'un écran ou projecteur, d'une connexion internet et d'un coordinateur local.</p>
+          <form id="fnForm" class="fn-form">
+            <label>Nom de l'église *<input type="text" name="eglise" required></label>
+            <label>Nom du pasteur *<input type="text" name="pasteur" required></label>
+            <label>Ville / commune *<input type="text" name="ville" required></label>
+            <label>Département
+              <select name="dept">
+                <option value="">Choisir…</option><option>Ouest</option><option>Nord</option><option>Nord-Est</option><option>Nord-Ouest</option><option>Artibonite</option>
+                <option>Centre</option><option>Sud</option><option>Sud-Est</option><option>Grand'Anse</option><option>Nippes</option><option>Hors d'Haïti</option>
+              </select></label>
+            <label>Téléphone / WhatsApp du pasteur *<input type="tel" name="tel" required></label>
+            <label>Email (facultatif)<input type="email" name="email"></label>
+            <label>Coordinateur local (nom) *<input type="text" name="coord" required></label>
+            <label>Téléphone du coordinateur<input type="tel" name="coordtel"></label>
+            <label class="full">Nombre de personnes pouvant être accueillies<input type="number" name="capacite" min="1" inputmode="numeric"></label>
+            <fieldset class="full"><legend>Équipement disponible</legend>
+              <label class="chk"><input type="checkbox" name="equip" value="Salle"> Salle</label>
+              <label class="chk"><input type="checkbox" name="equip" value="Écran ou projecteur"> Écran ou projecteur</label>
+              <label class="chk"><input type="checkbox" name="equip" value="Connexion internet"> Connexion internet</label>
+              <label class="chk"><input type="checkbox" name="equip" value="Système de son"> Système de son</label>
+              <label class="chk"><input type="checkbox" name="equip" value="Électricité fiable (groupe ou solaire)"> Électricité fiable</label>
+            </fieldset>
+            <label class="full">Commentaire (facultatif)<textarea name="comment" rows="3"></textarea></label>
+            <label class="chk full"><input type="checkbox" name="engage" required> Notre église s'engage à mobiliser ses familles et à participer aux tests techniques avant la formation. *</label>
+            <div class="full fn-cta"><button type="submit" class="fn-btn teal" style="border:0;cursor:pointer;">Envoyer mon inscription</button></div>
+          </form>
+          <div id="fnResult" class="fn-result" hidden>
+            <p><b>Votre inscription est prête.</b> WhatsApp s'ouvre avec le message déjà rempli : appuyez sur « Envoyer ». Si rien ne s'ouvre, copiez le message ci-dessous et envoyez-le à <a href="mailto:contacts@ocefami.org">contacts@ocefami.org</a> ou sur WhatsApp au +1 (829) 364-1482.</p>
+            <textarea id="fnMsg" rows="9" readonly></textarea>
+            <button type="button" class="fn-copy" id="fnCopyMsg">Copier le message</button>
+          </div>
         </div>
 
-        <h2 class="fn-h2">Votre soutien compte</h2>
-        <p>Ce projet est porté par OCEFAMI et repose sur la générosité de ses amis. À titre indicatif, son coût est estimé à environ 2 800 dollars américains, soit environ 140 dollars par église partenaire. Votre contribution servira à soutenir les églises hôtes (connexion internet, énergie, coordination locale, documents), à assurer la régie technique, à promouvoir l'événement et à couvrir les imprévus. Chaque don, quel qu'en soit le montant, nous rapproche de cet objectif.</p>
-        <div class="fn-tiers">
-          <div class="fn-tier"><b>80 $</b><span>Soutenir une église hôte</span></div>
-          <div class="fn-tier"><b>140 $</b><span>Couvrir la part d'une église dans l'ensemble du projet</span></div>
-        </div>
-        <div class="fn-cta"><a class="fn-btn coral" href="dons.html">Faire un don</a></div>
-        <p class="fn-note">Nous nous engageons à vous rendre compte de l'utilisation des fonds après l'événement.</p>
-
-        <p>Vous pouvez également nous soutenir en partageant cette annonce autour de vous, en en parlant à votre pasteur et en priant pour cette initiative. Nous vous remercions de votre confiance et de votre engagement pour les familles haïtiennes.</p>
-
-        <div class="fn-sign"><b>Makenson Dudys</b><span>Directeur Général, OCEFAMI</span></div>
+        <div class="fn-sign"><b>OCEFAMI</b></div>
       </div>
     </div>
   </section>
@@ -209,5 +245,46 @@
   });
 </script>
 
+
+<script>
+  (function(){
+    var WHATSAPP = "18293641482";            // numéro WhatsApp qui reçoit les inscriptions (à modifier si le numéro change)
+    var form = document.getElementById('fnForm');
+    if(!form) return;
+    function val(n){ var e = form.elements[n]; return e ? (e.value || '').trim() : ''; }
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(!form.reportValidity()) return;
+      var eq = [].slice.call(form.querySelectorAll('input[name=equip]:checked')).map(function(c){ return c.value; });
+      var lines = [
+        "INSCRIPTION ÉGLISE — Famille et Nation (16 janvier 2027)",
+        "",
+        "Église : " + val('eglise'),
+        "Pasteur : " + val('pasteur'),
+        "Ville / commune : " + val('ville'),
+        "Département : " + (val('dept') || '—'),
+        "Téléphone du pasteur : " + val('tel'),
+        "Email : " + (val('email') || '—'),
+        "Coordinateur local : " + val('coord') + (val('coordtel') ? " (" + val('coordtel') + ")" : ""),
+        "Capacité d'accueil : " + (val('capacite') || '—'),
+        "Équipement : " + (eq.length ? eq.join(", ") : "—"),
+        "Commentaire : " + (val('comment') || '—'),
+        "Engagement : oui (mobiliser les familles et participer aux tests techniques)"
+      ];
+      var msg = lines.join("\n");
+      document.getElementById('fnMsg').value = msg;
+      var box = document.getElementById('fnResult'); box.hidden = false;
+      box.scrollIntoView({behavior:'smooth', block:'center'});
+      window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+    });
+    var cp = document.getElementById('fnCopyMsg');
+    cp.addEventListener('click', function(){
+      var t = document.getElementById('fnMsg');
+      function done(){ cp.textContent = 'Message copié ✓'; setTimeout(function(){ cp.textContent = 'Copier le message'; }, 2500); }
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, fb); } else { fb(); }
+      function fb(){ t.select(); try{ document.execCommand('copy'); done(); }catch(e){} }
+    });
+  })();
+</script>
 </body>
 </html>
