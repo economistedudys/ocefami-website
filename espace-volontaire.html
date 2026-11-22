@@ -290,6 +290,7 @@ function friendly(e){var m=(e&&e.message)||String(e);
   if(/fields_required/.test(m))return 'Remplissez les champs obligatoires du projet.';
   if(/file_required/.test(m))return 'Joignez le dossier du projet.';
   if(/already_validated/.test(m))return 'Votre projet est déjà validé.';
+  if(/quiz_locked/.test(m))return 'Ce quiz ne peut être passé qu’une seule fois et votre tentative a déjà été utilisée. Contactez le formateur.';
   if(/question_required/.test(m))return 'Écrivez votre question.';
   if(/title_required/.test(m))return 'Donnez un titre à votre travail.';
   if(/consent_required/.test(m))return 'Cochez la case de confirmation.';
@@ -536,14 +537,17 @@ async function openLesson(id){
   var l=LES,h='<div class="crumb"><a id="lBack">← Mes formations</a></div><h1 style="font-family:Fraunces,Georgia,serif;color:var(--navy);margin:0 0 4px">'+esc(l.title)+'</h1><p class="small">'+(l.minutes||'?')+' min de lecture'+(l.passed?' · <span class="badge ok">Quiz réussi ('+l.best_score+'/'+l.questions.length+')</span>':'')+'</p>';
   if(l.video_url)h+='<div class="vid"><iframe src="'+esc(l.video_url)+'" allowfullscreen loading="lazy" title="Vidéo de la leçon"></iframe></div>';
   h+='<div class="card lesson"><h3 style="margin-top:0;color:var(--navy)">Objectifs</h3><ul>'+(l.objectives||[]).map(function(o){return '<li>'+esc(o)+'</li>'}).join('')+'</ul>'+(l.content||[]).map(function(t){return '<p>'+esc(t)+'</p>'}).join('')+'<div class="kp"><h4>À retenir</h4><ul style="margin:0">'+(l.keypoints||[]).map(function(k){return '<li>'+esc(k)+'</li>'}).join('')+'</ul></div></div>';
-  h+='<button class="btn" id="startQuiz">Passer le quiz ('+l.questions.length+' questions)</button>';
+  var locked=l.single_attempt&&l.attempts>=1;
+  if(l.single_attempt)h+='<div class="kp" style="border-left-color:#B54708"><h4>Quiz à tentative unique</h4><p style="margin:0">Ce quiz ne peut être passé qu’<strong>une seule fois</strong>. Relisez bien la leçon avant de commencer. Quitter la page sans valider ne consomme pas la tentative ; elle est comptée seulement quand vous cliquez sur « Valider mes réponses ».</p></div>';
+  if(locked)h+='<div class="'+(l.passed?'ok':'warn')+'" style="display:block;margin-top:12px">'+(l.passed?'<strong>Quiz réussi ('+l.best_score+'/'+l.questions.length+').</strong> Il ne peut plus être repassé.':'<strong>Votre tentative a été utilisée</strong> (score : '+l.best_score+'/'+l.questions.length+'). Contactez le formateur si vous pensez qu’une nouvelle tentative est justifiée.')+'</div>';
+  else h+='<button class="btn" id="startQuiz">Passer le quiz ('+l.questions.length+' questions)</button>';
   $('#lessonBody').innerHTML=h;$('#lBack').addEventListener('click',renderApp);
-  $('#startQuiz').addEventListener('click',startQuiz);show('v-lesson');
+  if($('#startQuiz'))$('#startQuiz').addEventListener('click',function(){if(LES.single_attempt&&!confirm('Ce quiz ne peut être passé qu’une seule fois. Commencer maintenant ?'))return;startQuiz()});show('v-lesson');
   rpc('mark_lesson_read',{p_lesson_id:id}).catch(function(){});
 }
 function startQuiz(){
   var l=LES;ORDER=l.questions.map(function(q){return shuffle(q.options.map(function(_,i){return i}))});
-  var h='<div class="crumb"><a id="lBack2">← Retour à la leçon</a></div><h2 style="font-family:Fraunces,Georgia,serif;color:var(--navy);margin:0 0 4px">Quiz : '+esc(l.title)+'</h2><p class="small">Il faut au moins 70 % de bonnes réponses. Vous pouvez recommencer autant de fois que nécessaire.</p><form id="quizForm">';
+  var h='<div class="crumb"><a id="lBack2">← Retour à la leçon</a></div><h2 style="font-family:Fraunces,Georgia,serif;color:var(--navy);margin:0 0 4px">Quiz : '+esc(l.title)+'</h2><p class="small">Il faut au moins 70 % de bonnes réponses. '+(l.single_attempt?'<strong>Une seule tentative : vos réponses sont définitives une fois validées.</strong>':'Vous pouvez recommencer autant de fois que nécessaire.')+'</p><form id="quizForm">';
   l.questions.forEach(function(q,qi){h+='<div class="q" id="q'+qi+'"><p>'+(qi+1)+'. '+esc(q.question)+'</p>'+ORDER[qi].map(function(oi){return '<label><input type="radio" name="q'+qi+'" value="'+oi+'"><span>'+esc(q.options[oi])+'</span></label>'}).join('')+'<div class="why hide"></div></div>'});
   h+='<div class="err" id="qErr"></div><button class="btn" type="submit" id="qSend">Valider mes réponses</button></form><div id="qRes"></div>';
   $('#lessonBody').innerHTML=h;window.scrollTo(0,0);
@@ -559,8 +563,8 @@ async function submitQuiz(e){e.preventDefault();var l=LES,ans=[],miss=[];
       if(r.passed&&!x.ok&&typeof x.correct==='number'){txt+='Bonne réponse : '+l.questions[qi].options[x.correct]+'. '}
       w.textContent=txt+(x.why||'')});
     var pass=r.passed;
-    $('#qRes').innerHTML='<div class="'+(pass?'ok':'warn')+'" style="display:block;margin-top:16px"><h2 style="margin:0 0 6px;font-family:Fraunces,Georgia,serif;color:'+(pass?'var(--green)':'#8a5300')+'">'+(pass?'Bravo, quiz réussi !':'Pas encore…')+'</h2><p style="margin:0 0 10px">Score : <strong>'+r.score+' / '+r.total+'</strong>'+(pass?'':' — relisez la leçon puis réessayez.')+'</p><button class="btn" id="afterQuiz">'+(pass?'Retour à mes formations':'Relire la leçon')+'</button></div>';
-    $('#afterQuiz').addEventListener('click',function(){pass?renderApp():openLesson(l.id)});
+    $('#qRes').innerHTML='<div class="'+(pass?'ok':'warn')+'" style="display:block;margin-top:16px"><h2 style="margin:0 0 6px;font-family:Fraunces,Georgia,serif;color:'+(pass?'var(--green)':'#8a5300')+'">'+(pass?'Bravo, quiz réussi !':'Pas encore…')+'</h2><p style="margin:0 0 10px">Score : <strong>'+r.score+' / '+r.total+'</strong>'+(pass?'':(r.single_attempt?' — votre tentative unique est utilisée. Contactez le formateur.':' — relisez la leçon puis réessayez.'))+'</p><button class="btn" id="afterQuiz">'+(pass||r.single_attempt?'Retour à mes formations':'Relire la leçon')+'</button></div>';
+    $('#afterQuiz').addEventListener('click',function(){(pass||r.single_attempt)?renderApp():openLesson(l.id)});
     btn.classList.add('hide');$('#qRes').scrollIntoView({behavior:'smooth',block:'center'});
   }catch(x){er.textContent=friendly(x);er.style.display='block';btn.disabled=false}}
 
