@@ -23,10 +23,10 @@ button,.btn{font:inherit;font-weight:700;background:var(--apricot);color:#1d1203
  <path d="M236 150 H364" stroke="#F0912A" stroke-width="3" stroke-linecap="round"/>
  <g transform="translate(300 232) scale(.92)"><polygon id="star" points="0,-62 18,-20 64,-20 27,8 41,52 0,26 -41,52 -27,8 -64,-20 -18,-20" fill="#F0912A"/><circle r="17" fill="#0D2A44"/><path d="M-7 -1 L-2 5 L8 -7" fill="none" stroke="#FBF7F0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
  <text id="b1" x="300" y="338" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="54" fill="#F0912A"></text>
- <text id="b2" x="300" y="376" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="22" letter-spacing="4" fill="#FBF7F0"></text>
- <rect x="110" y="404" width="380" height="64" rx="32" fill="#FBF7F0"/>
+ <text id="b2" x="301.5" y="374" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="19" letter-spacing="3" fill="#FBF7F0"></text>
+ <rect x="128" y="404" width="344" height="62" rx="31" fill="#FBF7F0"/>
  <text id="b3" x="300" y="446" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="30" fill="#0D2A44"></text>
- <text id="b4" x="300" y="506" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" letter-spacing="1" fill="#C9D6E3"></text>
+ <text id="b4" x="300" y="498" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="13" letter-spacing=".5" fill="#C9D6E3"></text>
 </svg>
 <p class="small" id="info"></p>
 <button id="dl">⬇ Télécharger le badge (PNG)</button>
@@ -48,7 +48,7 @@ function fit(el,max){var w=el.getComputedTextLength();if(w>max)el.setAttribute('
     $('#b3').textContent=c.holder_name;
     $('#b4').textContent='N° '+c.code;
     $('#msg').style.display='none';$('#box').style.display='block';
-    fit($('#b3'),340);fit($('#b1'),400);fit($('#b2'),400);
+    fit($('#b3'),300);fit($('#b1'),360);fit($('#b2'),350);fit($('#b4'),250);
     $('#info').textContent='Badge n° '+c.code+' · Délivré le '+new Date(c.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'});
     document.title='Badge — '+c.holder_name;
     if(fac){var a=$('#fac');a.style.display='inline-block';a.href='facilitateur.html?code='+encodeURIComponent(c.code)}
