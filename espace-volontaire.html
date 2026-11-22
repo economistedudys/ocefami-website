@@ -319,6 +319,8 @@ async function renderApp(){
     h+='</div>'});
   h+='</div></div>';
   if(certs.length){h+='<div class="step ok"><div class="n">🎓</div><div style="width:100%"><h3>Mes certificats</h3>'+certs.map(function(c){return '<div class="certrow"><span>'+esc(c.course)+' <span class="small">· '+new Date(c.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><a href="certificat.html?code='+encodeURIComponent(c.code)+'" target="_blank" rel="noopener">Ouvrir le certificat</a></div>'}).join('')+'</div></div>'}
+  var badges=[];if(signed){try{badges=await rpc('claim_my_badges')}catch(x){badges=[]}}
+  if(badges.length){h+='<div class="step ok"><div class="n">🏅</div><div style="width:100%"><h3>Mes badges</h3>'+badges.map(function(b){var fac=b.kind==='facilitateur',u=encodeURIComponent(b.code);return '<div class="certrow"><span>'+(fac?'Badge Facilitateur':'Badge Volontaire OCEFAMI')+' <span class="small">· '+new Date(b.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><span><a href="badge.html?code='+u+'" target="_blank" rel="noopener">Voir le badge</a>'+(fac?' · <a href="facilitateur.html?code='+u+'" target="_blank" rel="noopener">Certificat de facilitateur</a>':'')+'</span></div>'}).join('')+'</div></div>'}
   $('#steps').innerHTML=h;
   var g=function(id,fn){var e=$(id);if(e)e.addEventListener('click',fn)};
   g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);

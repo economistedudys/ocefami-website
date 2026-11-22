@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Badge OCEFAMI</title><meta name="robots" content="noindex">
+<style>
+:root{--navy:#0D2A44;--apricot:#F0912A;--cream:#FBF7F0}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:#1d2b3a;font-family:'Work Sans',system-ui,sans-serif;text-align:center}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px 40px}
+a.back{display:inline-block;margin-bottom:10px;color:var(--navy);font-weight:600;text-decoration:none}
+svg{width:100%;max-width:420px;height:auto;filter:drop-shadow(0 10px 20px rgba(13,42,68,.25))}
+button,.btn{font:inherit;font-weight:700;background:var(--apricot);color:#1d1203;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;text-decoration:none;display:inline-block;margin:6px}
+.btn.s{background:#fff;border:1px solid #CFC5B3;color:var(--navy)}
+.small{color:#475467;font-size:.9rem}
+#msg{margin:40px 0}.bad{background:#FDECEA;border:1px solid #F4B7B1;border-radius:12px;padding:18px;color:#7A1710}
+</style></head><body><div class="wrap">
+<a class="back" href="espace-volontaire.html">← Espace volontaire</a>
+<div id="msg">Vérification du badge…</div>
+<div id="box" style="display:none">
+<svg id="badge" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Badge OCEFAMI">
+ <circle cx="300" cy="300" r="290" fill="#0D2A44"/>
+ <circle cx="300" cy="300" r="268" fill="none" stroke="#F0912A" stroke-width="10"/>
+ <circle cx="300" cy="300" r="244" fill="none" stroke="#FBF7F0" stroke-width="2" stroke-dasharray="3 9"/>
+ <text x="300" y="118" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="40" letter-spacing="9" fill="#FBF7F0">OCEFAMI</text>
+ <g transform="translate(300 222)"><polygon id="star" points="0,-62 18,-20 64,-20 27,8 41,52 0,26 -41,52 -27,8 -64,-20 -18,-20" fill="#F0912A"/><circle r="17" fill="#0D2A44"/><path d="M-7 -1 L-2 5 L8 -7" fill="none" stroke="#FBF7F0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+ <text id="b1" x="300" y="338" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="54" fill="#F0912A"></text>
+ <text id="b2" x="300" y="376" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="22" letter-spacing="4" fill="#FBF7F0"></text>
+ <rect x="110" y="404" width="380" height="64" rx="32" fill="#FBF7F0"/>
+ <text id="b3" x="300" y="446" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="30" fill="#0D2A44"></text>
+ <text id="b4" x="300" y="506" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" letter-spacing="1" fill="#C9D6E3"></text>
+</svg>
+<p class="small" id="info"></p>
+<button id="dl">⬇ Télécharger le badge (PNG)</button>
+<a class="btn s" id="fac" style="display:none">Voir le certificat de facilitateur</a>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+var sb=window.supabase.createClient("https://qxhryjfvirofbeaziopp.supabase.co","sb_publishable_C1z6aR6kvZ8l5BsgGoEvMA_iGJEvwWY");
+var $=function(s){return document.querySelector(s)};
+var code=new URLSearchParams(location.search).get('code')||'';
+function fit(el,max){var w=el.getComputedTextLength();if(w>max)el.setAttribute('font-size',parseFloat(el.getAttribute('font-size'))*max/w)}
+(async function(){
+  if(!code){$('#msg').innerHTML='<div class="bad">Aucun numéro de badge fourni.</div>';return}
+  try{var r=await sb.rpc('verify_badge',{p_code:code});if(r.error)throw r.error;var c=r.data;
+    if(!c){$('#msg').innerHTML='<div class="bad"><strong>Badge introuvable.</strong><br>Le numéro « '+code.replace(/[<>&"]/g,'')+' » ne correspond à aucun badge OCEFAMI.</div>';return}
+    var fac=c.kind==='facilitateur';
+    $('#b1').textContent=fac?'Facilitateur':'Volontaire';
+    $('#b2').textContent=fac?'VOLONTAIRE CERTIFIÉ':'PROGRAMME DES VOLONTAIRES';
+    $('#b3').textContent=c.holder_name;
+    $('#b4').textContent='N° '+c.code;
+    $('#msg').style.display='none';$('#box').style.display='block';
+    fit($('#b3'),340);fit($('#b1'),400);fit($('#b2'),400);
+    $('#info').textContent='Badge n° '+c.code+' · Délivré le '+new Date(c.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'});
+    document.title='Badge — '+c.holder_name;
+    if(fac){var a=$('#fac');a.style.display='inline-block';a.href='facilitateur.html?code='+encodeURIComponent(c.code)}
+    $('#dl').addEventListener('click',function(){
+      var svg=new XMLSerializer().serializeToString($('#badge')),img=new Image();
+      img.onload=function(){var cv=document.createElement('canvas');cv.width=1200;cv.height=1200;cv.getContext('2d').drawImage(img,0,0,1200,1200);
+        cv.toBlob(function(b){var l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='Badge-OCEFAMI-'+(fac?'Facilitateur':'Volontaire')+'-'+c.code+'.png';document.body.appendChild(l);l.click();l.remove()},'image/png')};
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});
+  }catch(e){$('#msg').innerHTML='<div class="bad">Impossible de vérifier le badge pour le moment. Réessayez plus tard.</div>'}
+})();
+</script></body></html>
