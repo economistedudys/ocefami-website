@@ -208,6 +208,24 @@ button{font:inherit;cursor:pointer;border-radius:10px;padding:11px 20px;font-wei
   <div class="err" id="subErr" style="display:none;margin-top:14px"></div>
   <div class="row" style="justify-content:flex-start;margin-top:16px"><button class="btn" type="submit" id="subBtn">Envoyer au staff</button><button class="ghost" type="button" id="subCancel">Retour</button></div></form>
 </div></section>
+<section id="v-project" class="hide"><div class="card" style="max-width:720px;margin:20px auto">
+  <h2>Projet communautaire (40 % de la note)</h2>
+  <p class="small" style="margin:0 0 14px">Présentez un projet qui répond à un besoin réel en Haïti. Il compte pour 40 % de la note finale du cours (quiz : 60 %) et il est <strong>obligatoire</strong> pour obtenir le certificat. Joignez votre dossier (Word ou PDF, 50 Mo maximum) construit avec les outils du cours : charte, cadre logique, SDT, échéancier, budget, risques, communications, RACI. Vous pouvez renvoyer une version corrigée tant que le projet n’est pas validé.</p>
+  <form id="projForm" novalidate><div class="grid">
+    <div style="grid-column:1/-1"><label class="f">Titre du projet *</label><input type="text" id="ptitle" maxlength="150"></div>
+    <div style="grid-column:1/-1"><label class="f">Besoin réel identifié (problème, chiffres, preuves) *</label><textarea id="pneed" rows="4" maxlength="1500" style="width:100%;padding:11px;border:1px solid #CFC5B3;border-radius:9px;font:inherit"></textarea></div>
+    <div><label class="f">Lieu (commune, quartier, église…) *</label><input type="text" id="ploc" maxlength="150"></div>
+    <div><label class="f">Bénéficiaires (qui, combien) *</label><input type="text" id="pben" maxlength="200"></div>
+    <div style="grid-column:1/-1"><label class="f">Objectif principal et résultat attendu</label><textarea id="pobj" rows="2" maxlength="600" style="width:100%;padding:11px;border:1px solid #CFC5B3;border-radius:9px;font:inherit"></textarea></div>
+    <div><label class="f">Budget estimé (avec la monnaie)</label><input type="text" id="pbud" maxlength="100"></div>
+    <div><label class="f">Durée estimée</label><input type="text" id="pdur" maxlength="100"></div>
+    <div style="grid-column:1/-1"><label class="f">Résumé en quelques lignes</label><textarea id="psum" rows="3" maxlength="900" style="width:100%;padding:11px;border:1px solid #CFC5B3;border-radius:9px;font:inherit"></textarea></div>
+    <div style="grid-column:1/-1"><label class="f">Dossier complet du projet (Word ou PDF) *</label><input type="file" id="pfile" accept=".doc,.docx,.pdf"></div>
+  </div>
+  <label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:.93rem"><input type="checkbox" id="pconsent" style="margin-top:4px"><span>Je confirme que ce projet est mon travail personnel, que les informations sont exactes et que les personnes citées ont donné leur accord.</span></label>
+  <div class="err" id="projErr" style="display:none;margin-top:14px"></div>
+  <div class="row" style="justify-content:flex-start;margin-top:16px"><button class="btn" type="submit" id="projBtn">Envoyer mon projet</button><button class="ghost" type="button" id="projCancel">Retour</button></div></form>
+</div></section>
 <section id="v-print" class="hide">
   <div class="row noprint" style="justify-content:flex-start;margin-bottom:14px"><button class="ghost" id="printBack">← Retour</button><button class="btn" onclick="window.print()">Imprimer / enregistrer en PDF</button></div>
   <div id="receipt"></div>
@@ -246,12 +264,17 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var S={profile:null,courses:[],recovery:false};
 
-function show(id){['v-login','v-recovery','v-pwd','v-profile','v-app','v-contract','v-lesson','v-print','v-denied','v-submit'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==id)});window.scrollTo(0,0)}
+function show(id){['v-login','v-recovery','v-pwd','v-profile','v-app','v-contract','v-lesson','v-print','v-denied','v-submit','v-project'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==id)});window.scrollTo(0,0)}
 function msg(el,text,ok){var e=$(el);e.textContent=text;e.className=ok?'okmsg':'err';e.style.display=text?'block':'none'}
 function friendly(e){var m=(e&&e.message)||String(e);
   if(/Invalid login/i.test(m))return 'E-mail ou mot de passe incorrect.';
   if(/contract_required/.test(m))return 'Vous devez d’abord signer l’engagement.';
   if(/course_incomplete/.test(m))return 'Toutes les leçons doivent être réussies avant le certificat.';
+  if(/project_required/.test(m))return 'Le projet communautaire doit d’abord être soumis et validé par le staff.';
+  if(/grade_too_low/.test(m))return 'Votre note finale (quiz 60 % + projet 40 %) est inférieure à 70 %.';
+  if(/fields_required/.test(m))return 'Remplissez les champs obligatoires du projet.';
+  if(/file_required/.test(m))return 'Joignez le dossier du projet.';
+  if(/already_validated/.test(m))return 'Votre projet est déjà validé.';
   if(/title_required/.test(m))return 'Donnez un titre à votre travail.';
   if(/consent_required/.test(m))return 'Cochez la case de confirmation.';
   if(/profile_incomplete/.test(m))return 'Complétez d’abord votre profil (nom complet).';
@@ -313,6 +336,7 @@ async function boot(){
 async function renderApp(){
   var p=S.profile;try{S.courses=await rpc('list_courses')}catch(x){S.courses=[]}
   var certs=[];try{certs=await rpc('my_certificates')}catch(x){}
+  S.proj={};for(var ci=0;ci<S.courses.length;ci++){try{S.proj[S.courses[ci].id]=await rpc('my_project',{p_course_id:S.courses[ci].id})}catch(x){S.proj[S.courses[ci].id]=null}}
   $('#hello').textContent='Bonjour '+p.full_name.split(' ')[0]+' 👋';
   $('#who').textContent=p.full_name+' · '+p.pole;
   $('#adminLink').classList.toggle('hide',p.role!=='admin');
@@ -332,7 +356,9 @@ async function renderApp(){
     h+='<div class="course'+(signed?'':' locked')+'"><h3>'+esc(c.title)+'</h3><p class="small" style="margin:0 0 8px">'+esc(c.intro||'')+'</p><div class="bar"><i style="width:'+(all?100*done/all:0)+'%"></i></div><div class="count">'+done+' / '+all+' leçons réussies</div>';
     c.lessons.forEach(function(l,i){
       h+='<div class="lrow"><div><strong>Leçon '+(i+1)+'.</strong> '+esc(l.title)+' <span class="small">· '+(l.minutes||'?')+' min</span></div><div>'+(l.passed?'<span class="badge ok">Réussie ('+l.best_score+'/'+l.total+')</span> ':'')+(signed?'<button class="ghost openLesson" data-id="'+esc(l.id)+'">'+(l.passed?'Revoir':(l.read?'Reprendre':'Commencer'))+'</button>':'<span class="badge lock">🔒</span>')+'</div></div>'});
-    if(signed&&all&&done===all)h+='<div style="margin-top:12px"><button class="btn getCert" data-id="'+esc(c.id)+'">🎓 '+(c.certificate_code?'Voir mon certificat':'Obtenir mon certificat')+'</button></div>';
+    h+=projBlock(c,S.proj[c.id],signed,done,all);var pj=S.proj[c.id],pjOk=!pj||!pj.required||(pj.project&&pj.project.status==='valide'&&pj.grade&&pj.grade.final>=70);
+    if(signed&&all&&done===all&&!pjOk)h+='<p class="small" style="margin-top:10px">🎓 Le certificat sera disponible après la validation de votre projet communautaire (note finale minimale : 70 %).</p>';
+    if(signed&&all&&done===all&&pjOk)h+='<div style="margin-top:12px"><button class="btn getCert" data-id="'+esc(c.id)+'">🎓 '+(c.certificate_code?'Voir mon certificat':'Obtenir mon certificat')+'</button></div>';
     h+='</div>'});
   h+='</div></div>';
   if(certs.length){h+='<div class="step ok"><div class="n">🎓</div><div style="width:100%"><h3>Mes certificats</h3>'+certs.map(function(c){return '<div class="certrow"><span>'+esc(c.course)+' <span class="small">· '+new Date(c.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><a href="certificat.html?code='+encodeURIComponent(c.code)+'" target="_blank" rel="noopener">Ouvrir le certificat</a></div>'}).join('')+'</div></div>'}
@@ -342,7 +368,7 @@ async function renderApp(){
   if(signed){h+='<div class="step"><div class="n">📤</div><div style="width:100%"><h3>Soumettre mon travail</h3><p class="small" style="margin:0 0 8px">Envoyez vos audios, vidéos, articles ou visuels au staff.</p>'+(S.flash?'<div class="okmsg">'+esc(S.flash)+'</div>':'')+'<button class="btn" id="goSubmit">📤 Soumettre un travail</button>'+(subs.length?'<div style="margin-top:12px">'+subs.map(function(s){var st=SUB_STATUS[s.status]||['',''];return '<div class="certrow"><span>'+esc(s.title)+' <span class="small">· '+esc(({audio:'Audio',video:'Vidéo',article:'Article',image:'Image'})[s.kind]||'')+' · '+new Date(s.created_at).toLocaleDateString('fr-FR',{dateStyle:'medium'})+'</span>'+(s.staff_comment?'<br><span class="small">💬 '+esc(s.staff_comment)+'</span>':'')+'</span><span style="font-weight:700;color:'+st[1]+'">'+st[0]+'</span></div>'}).join('')+'</div>':'')+'</div></div>';S.flash=''}
   $('#steps').innerHTML=h;
   var g=function(id,fn){var e=$(id);if(e)e.addEventListener('click',fn)};
-  g('#goSubmit',openSubmit);g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);
+  g('#goSubmit',openSubmit);document.querySelectorAll('.goProj').forEach(function(b){b.addEventListener('click',function(){openProject(b.dataset.id)})});g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);
   document.querySelectorAll('.openLesson').forEach(function(b){b.addEventListener('click',function(){openLesson(b.dataset.id)})});
   document.querySelectorAll('.getCert').forEach(function(b){b.addEventListener('click',async function(){b.disabled=true;try{var code=await rpc('issue_certificate',{p_course_id:b.dataset.id});window.open('certificat.html?code='+encodeURIComponent(code),'_blank');await renderApp()}catch(x){alert(friendly(x));b.disabled=false}})});
   show('v-app');
@@ -372,6 +398,35 @@ $('#subForm').addEventListener('submit',async function(e){e.preventDefault();msg
     S.flash='Merci ! Votre travail a bien été envoyé au staff.';await renderApp()}
   catch(x){msg('#subErr',/maximum allowed size|too large|413/i.test((x&&x.message)||'')?'Fichier trop lourd (50 Mo maximum).':friendly(x))}
   b.disabled=false;b.textContent='Envoyer au staff'});
+
+
+/* ---------- Projet communautaire (40 %) ---------- */
+var PROJ_ST={recu:['Reçu — en attente de correction','#475467'],a_corriger:['À corriger','#B54708'],valide:['Validé','#067647']};
+function projBlock(c,pi,signed,done,all){
+  if(!pi||!pi.required)return '';
+  var p=pi.project,g=pi.grade||{},h='<div class="course" style="margin-top:12px;background:#FFFBF3"><h3 style="font-size:1rem">📌 Projet communautaire — 40 % de la note</h3><p class="small" style="margin:0 0 8px">Obligatoire pour le certificat : un projet qui répond à un besoin réel en Haïti. Note finale = quiz (60 %) + projet (40 %), minimum 70 %.</p>';
+  if(p){var st=PROJ_ST[p.status]||['',''];h+='<div class="certrow"><span><strong>'+esc(p.title)+'</strong> <span class="small">· '+esc(p.location)+' · '+new Date(p.updated_at).toLocaleDateString('fr-FR',{dateStyle:'medium'})+'</span></span><span class="badge" style="color:'+st[1]+'">'+st[0]+(p.score!=null?' · '+p.score+'/100':'')+'</span></div>'+(p.staff_comment?'<p class="small" style="margin:6px 0"><strong>Commentaire du staff :</strong> '+esc(p.staff_comment)+'</p>':'')}
+  else h+='<p class="small" style="margin:0 0 8px">Aucun projet soumis pour l’instant.</p>';
+  if(g.final!=null)h+='<p style="margin:8px 0 0"><strong>Note finale : '+g.final+' / 100</strong> <span class="small">(quiz '+g.quiz+' · projet '+g.project+')</span></p>';
+  if(signed&&(!p||p.status!=='valide'))h+='<button class="btn goProj" data-id="'+esc(c.id)+'" style="margin-top:10px">'+(p?'Renvoyer une version corrigée':'Soumettre mon projet')+'</button>';
+  return h+'</div>'}
+function openProject(cid){S.projCourse=cid;$('#projForm').reset();msg('#projErr','');
+  var p=(S.proj[cid]||{}).project;if(p){$('#ptitle').value=p.title;$('#pneed').value=p.need;$('#ploc').value=p.location;$('#pben').value=p.beneficiaries;$('#pobj').value=p.objective;$('#pbud').value=p.budget;$('#pdur').value=p.duration;$('#psum').value=p.summary}
+  show('v-project')}
+$('#projCancel').addEventListener('click',renderApp);
+$('#projForm').addEventListener('submit',async function(e){e.preventDefault();msg('#projErr','');
+  var t=$('#ptitle').value.trim(),n=$('#pneed').value.trim(),l=$('#ploc').value.trim(),bn=$('#pben').value.trim(),f=$('#pfile').files[0];
+  if(!t||!n||!l||!bn){msg('#projErr','Remplissez le titre, le besoin, le lieu et les bénéficiaires.');return}
+  if(!f){msg('#projErr','Joignez le dossier complet du projet (Word ou PDF).');return}
+  if(f.size>50*1024*1024){msg('#projErr','Fichier trop lourd (50 Mo maximum).');return}
+  if(!$('#pconsent').checked){msg('#projErr','Cochez la case de confirmation.');return}
+  var b=$('#projBtn');b.disabled=true;b.textContent='Envoi en cours…';
+  try{var path=S.profile.id+'/projet-'+Date.now()+'-'+f.name.replace(/[^A-Za-z0-9._-]/g,'_');
+    var up=await sb.storage.from('soumissions').upload(path,f,{contentType:f.type||undefined,upsert:false});if(up.error)throw up.error;
+    await rpc('submit_project',{p_course_id:S.projCourse,p_title:t,p_need:n,p_location:l,p_beneficiaries:bn,p_objective:$('#pobj').value.trim(),p_budget:$('#pbud').value.trim(),p_duration:$('#pdur').value.trim(),p_summary:$('#psum').value.trim(),p_file_path:path,p_file_name:f.name});
+    S.flash='Merci ! Votre projet a été envoyé. Le staff le relira et vous répondra ici.';await renderApp()}
+  catch(x){msg('#projErr',friendly(x))}
+  b.disabled=false;b.textContent='Envoyer mon projet'});
 
 /* ---------- Contrat ---------- */
 var cv,ctx,drawing=false,ink=0,last=null;
