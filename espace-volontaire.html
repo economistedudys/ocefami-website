@@ -193,6 +193,21 @@ button{font:inherit;cursor:pointer;border-radius:10px;padding:11px 20px;font-wei
 
 <section id="v-lesson" class="hide"><div id="lessonBody"></div></section>
 
+<section id="v-submit" class="hide"><div class="card" style="max-width:680px;margin:20px auto">
+  <h2>Soumettre mon travail</h2>
+  <p class="small" style="margin:0 0 14px">Déposez ici vos audios, vidéos, articles ou visuels. Le staff les recevra, les relira et vous répondra ici même. Taille maximale : 50 Mo par fichier.</p>
+  <form id="subForm" novalidate><div class="grid">
+    <div><label class="f">Type de travail *</label><select id="skind"><option value="audio">Audio / note vocale</option><option value="video">Vidéo</option><option value="article">Article (texte)</option><option value="image">Image / visuel</option></select></div>
+    <div><label class="f">Émission / rubrique</label><select id="semi"><option>Viens à Lui</option><option>Famille en 5 minutes</option><option>Parole de la semaine</option><option>Témoignages de familles</option><option>Jeunes et valeurs</option><option>Haïti en construction</option><option>Question du fidèle</option><option>Portrait de volontaire</option><option>Coulisses de Famille et Nation</option><option>Podcast OCEFAMI</option><option>Chronique de l’article</option><option>Le saviez-vous ?</option><option>Autre</option></select></div>
+    <div style="grid-column:1/-1"><label class="f">Titre *</label><input type="text" id="stitle" maxlength="150"></div>
+    <div style="grid-column:1/-1"><label class="f">Description courte</label><textarea id="sdesc" rows="3" maxlength="600" style="width:100%;padding:11px;border:1px solid #CFC5B3;border-radius:9px;font:inherit"></textarea></div>
+    <div style="grid-column:1/-1" id="sartbox" class="hide"><label class="f">Texte de l’article (vous pouvez aussi joindre un fichier Word ou PDF ci-dessous)</label><textarea id="sart" rows="10" style="width:100%;padding:11px;border:1px solid #CFC5B3;border-radius:9px;font:inherit"></textarea></div>
+    <div style="grid-column:1/-1"><label class="f" id="sfilelab">Fichier *</label><input type="file" id="sfile"></div>
+  </div>
+  <label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:.93rem"><input type="checkbox" id="sconsent" style="margin-top:4px"><span>Je confirme que ce travail est de moi (ou que j’ai le droit de l’utiliser), que les personnes qui y apparaissent ont donné leur accord, et qu’aucun enfant n’y figure sans l’accord de ses parents.</span></label>
+  <div class="err" id="subErr" style="display:none;margin-top:14px"></div>
+  <div class="row" style="justify-content:flex-start;margin-top:16px"><button class="btn" type="submit" id="subBtn">Envoyer au staff</button><button class="ghost" type="button" id="subCancel">Retour</button></div></form>
+</div></section>
 <section id="v-print" class="hide">
   <div class="row noprint" style="justify-content:flex-start;margin-bottom:14px"><button class="ghost" id="printBack">← Retour</button><button class="btn" onclick="window.print()">Imprimer / enregistrer en PDF</button></div>
   <div id="receipt"></div>
@@ -231,12 +246,14 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var S={profile:null,courses:[],recovery:false};
 
-function show(id){['v-login','v-recovery','v-pwd','v-profile','v-app','v-contract','v-lesson','v-print','v-denied'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==id)});window.scrollTo(0,0)}
+function show(id){['v-login','v-recovery','v-pwd','v-profile','v-app','v-contract','v-lesson','v-print','v-denied','v-submit'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==id)});window.scrollTo(0,0)}
 function msg(el,text,ok){var e=$(el);e.textContent=text;e.className=ok?'okmsg':'err';e.style.display=text?'block':'none'}
 function friendly(e){var m=(e&&e.message)||String(e);
   if(/Invalid login/i.test(m))return 'E-mail ou mot de passe incorrect.';
   if(/contract_required/.test(m))return 'Vous devez d’abord signer l’engagement.';
   if(/course_incomplete/.test(m))return 'Toutes les leçons doivent être réussies avant le certificat.';
+  if(/title_required/.test(m))return 'Donnez un titre à votre travail.';
+  if(/consent_required/.test(m))return 'Cochez la case de confirmation.';
   if(/profile_incomplete/.test(m))return 'Complétez d’abord votre profil (nom complet).';
   if(/Failed to fetch|NetworkError|network/i.test(m))return 'Problème de connexion internet. Réessayez.';
   if(/weak|at least/i.test(m))return 'Mot de passe trop faible (8 caractères minimum).';
@@ -321,13 +338,40 @@ async function renderApp(){
   if(certs.length){h+='<div class="step ok"><div class="n">🎓</div><div style="width:100%"><h3>Mes certificats</h3>'+certs.map(function(c){return '<div class="certrow"><span>'+esc(c.course)+' <span class="small">· '+new Date(c.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><a href="certificat.html?code='+encodeURIComponent(c.code)+'" target="_blank" rel="noopener">Ouvrir le certificat</a></div>'}).join('')+'</div></div>'}
   var badges=[];if(signed){try{badges=await rpc('claim_my_badges')}catch(x){badges=[]}}
   if(badges.length){h+='<div class="step ok"><div class="n">🏅</div><div style="width:100%"><h3>Mes badges</h3>'+badges.map(function(b){var fac=b.kind==='facilitateur',u=encodeURIComponent(b.code);return '<div class="certrow"><span>'+(fac?'Badge Facilitateur':'Badge Volontaire OCEFAMI')+' <span class="small">· '+new Date(b.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><span><a href="badge.html?code='+u+'" target="_blank" rel="noopener">Voir le badge</a>'+(fac?' · <a href="facilitateur.html?code='+u+'" target="_blank" rel="noopener">Certificat de facilitateur</a>':'')+'</span></div>'}).join('')+'</div></div>'}
+  var subs=[];if(signed){try{subs=await rpc('my_submissions')}catch(x){subs=[]}}
+  if(signed){h+='<div class="step"><div class="n">📤</div><div style="width:100%"><h3>Soumettre mon travail</h3><p class="small" style="margin:0 0 8px">Envoyez vos audios, vidéos, articles ou visuels au staff.</p>'+(S.flash?'<div class="okmsg">'+esc(S.flash)+'</div>':'')+'<button class="btn" id="goSubmit">📤 Soumettre un travail</button>'+(subs.length?'<div style="margin-top:12px">'+subs.map(function(s){var st=SUB_STATUS[s.status]||['',''];return '<div class="certrow"><span>'+esc(s.title)+' <span class="small">· '+esc(({audio:'Audio',video:'Vidéo',article:'Article',image:'Image'})[s.kind]||'')+' · '+new Date(s.created_at).toLocaleDateString('fr-FR',{dateStyle:'medium'})+'</span>'+(s.staff_comment?'<br><span class="small">💬 '+esc(s.staff_comment)+'</span>':'')+'</span><span style="font-weight:700;color:'+st[1]+'">'+st[0]+'</span></div>'}).join('')+'</div>':'')+'</div></div>';S.flash=''}
   $('#steps').innerHTML=h;
   var g=function(id,fn){var e=$(id);if(e)e.addEventListener('click',fn)};
-  g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);
+  g('#goSubmit',openSubmit);g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);
   document.querySelectorAll('.openLesson').forEach(function(b){b.addEventListener('click',function(){openLesson(b.dataset.id)})});
   document.querySelectorAll('.getCert').forEach(function(b){b.addEventListener('click',async function(){b.disabled=true;try{var code=await rpc('issue_certificate',{p_course_id:b.dataset.id});window.open('certificat.html?code='+encodeURIComponent(code),'_blank');await renderApp()}catch(x){alert(friendly(x));b.disabled=false}})});
   show('v-app');
 }
+
+
+/* ---------- Soumission de travaux ---------- */
+var SUB_STATUS={recu:['Reçu','#475467'],a_corriger:['À corriger','#B54708'],valide:['Validé','#067647'],publie:['Publié','#175CD3']};
+function openSubmit(){$('#subForm').reset();msg('#subErr','');subKind();show('v-submit')}
+function subKind(){var k=$('#skind').value;$('#sartbox').classList.toggle('hide',k!=='article');
+  $('#sfile').accept={audio:'audio/*',video:'video/*',article:'.doc,.docx,.pdf,.txt',image:'image/*'}[k];
+  $('#sfilelab').textContent=k==='article'?'Fichier (facultatif si vous écrivez le texte ci-dessus)':'Fichier *'}
+$('#skind').addEventListener('change',subKind);
+$('#subCancel').addEventListener('click',renderApp);
+$('#subForm').addEventListener('submit',async function(e){e.preventDefault();msg('#subErr','');
+  var kind=$('#skind').value,title=$('#stitle').value.trim(),f=$('#sfile').files[0],art=$('#sart').value.trim();
+  if(!title){msg('#subErr','Donnez un titre à votre travail.');return}
+  if(kind!=='article'&&!f){msg('#subErr','Choisissez le fichier à envoyer.');return}
+  if(kind==='article'&&!f&&!art){msg('#subErr','Écrivez votre article ou joignez un fichier.');return}
+  if(f&&f.size>50*1024*1024){msg('#subErr','Fichier trop lourd (50 Mo maximum). Compressez-le ou envoyez-nous un lien.');return}
+  if(!$('#sconsent').checked){msg('#subErr','Cochez la case de confirmation.');return}
+  var b=$('#subBtn');b.disabled=true;b.textContent='Envoi en cours…';
+  try{var path=null,name=null;
+    if(f){name=f.name;path=S.profile.id+'/'+Date.now()+'-'+f.name.replace(/[^A-Za-z0-9._-]/g,'_');
+      var up=await sb.storage.from('soumissions').upload(path,f,{contentType:f.type||undefined,upsert:false});if(up.error)throw up.error}
+    await rpc('submit_work',{p_kind:kind,p_emission:$('#semi').value,p_title:title,p_description:$('#sdesc').value.trim(),p_article:art,p_file_path:path,p_file_name:name,p_consent:true});
+    S.flash='Merci ! Votre travail a bien été envoyé au staff.';await renderApp()}
+  catch(x){msg('#subErr',/maximum allowed size|too large|413/i.test((x&&x.message)||'')?'Fichier trop lourd (50 Mo maximum).':friendly(x))}
+  b.disabled=false;b.textContent='Envoyer au staff'});
 
 /* ---------- Contrat ---------- */
 var cv,ctx,drawing=false,ink=0,last=null;
