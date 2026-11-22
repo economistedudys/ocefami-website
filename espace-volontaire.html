@@ -226,6 +226,21 @@ button{font:inherit;cursor:pointer;border-radius:10px;padding:11px 20px;font-wei
   <div class="err" id="projErr" style="display:none;margin-top:14px"></div>
   <div class="row" style="justify-content:flex-start;margin-top:16px"><button class="btn" type="submit" id="projBtn">Envoyer mon projet</button><button class="ghost" type="button" id="projCancel">Retour</button></div></form>
 </div></section>
+<section id="v-faq" class="hide"><div class="card" style="max-width:720px;margin:20px auto">
+  <div class="crumb"><a id="faqBack">← Retour à mes formations</a></div>
+  <h2 id="faqTitle">Foire aux questions</h2>
+  <p class="small" style="margin:0 0 14px">Posez votre question au formateur. Les questions déjà répondues sont visibles par tous les volontaires du cours : vérifiez d’abord si la réponse existe. Pour un sujet personnel ou sensible, cochez « question privée » : seul le formateur la verra et vous répondra.</p>
+  <form id="faqForm" novalidate>
+    <div style="margin-bottom:10px"><label class="f">Leçon concernée (facultatif)</label><select id="faqLesson"></select></div>
+    <div><label class="f">Votre question *</label><textarea id="faqQ" rows="4" maxlength="1500" style="width:100%;padding:11px;border:1px solid #CFC5B3;border-radius:9px;font:inherit"></textarea></div>
+    <label style="display:flex;gap:10px;align-items:center;margin-top:10px;font-size:.93rem"><input type="checkbox" id="faqPriv"> <span>Question privée (non publiée dans la FAQ)</span></label>
+    <div class="err" id="faqErr" style="display:none;margin-top:12px"></div>
+    <div class="row" style="justify-content:flex-start;margin-top:12px"><button class="btn" type="submit" id="faqBtn">Envoyer ma question</button></div>
+  </form>
+  <div id="faqOk" class="okmsg hide" style="margin-top:12px"></div>
+  <h3 style="margin:22px 0 6px;color:var(--navy)">Questions et réponses</h3>
+  <div id="faqList"></div>
+</div></section>
 <section id="v-print" class="hide">
   <div class="row noprint" style="justify-content:flex-start;margin-bottom:14px"><button class="ghost" id="printBack">← Retour</button><button class="btn" onclick="window.print()">Imprimer / enregistrer en PDF</button></div>
   <div id="receipt"></div>
@@ -264,7 +279,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var S={profile:null,courses:[],recovery:false};
 
-function show(id){['v-login','v-recovery','v-pwd','v-profile','v-app','v-contract','v-lesson','v-print','v-denied','v-submit','v-project'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==id)});window.scrollTo(0,0)}
+function show(id){['v-login','v-recovery','v-pwd','v-profile','v-app','v-contract','v-lesson','v-print','v-denied','v-submit','v-project','v-faq'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==id)});window.scrollTo(0,0)}
 function msg(el,text,ok){var e=$(el);e.textContent=text;e.className=ok?'okmsg':'err';e.style.display=text?'block':'none'}
 function friendly(e){var m=(e&&e.message)||String(e);
   if(/Invalid login/i.test(m))return 'E-mail ou mot de passe incorrect.';
@@ -275,6 +290,7 @@ function friendly(e){var m=(e&&e.message)||String(e);
   if(/fields_required/.test(m))return 'Remplissez les champs obligatoires du projet.';
   if(/file_required/.test(m))return 'Joignez le dossier du projet.';
   if(/already_validated/.test(m))return 'Votre projet est déjà validé.';
+  if(/question_required/.test(m))return 'Écrivez votre question.';
   if(/title_required/.test(m))return 'Donnez un titre à votre travail.';
   if(/consent_required/.test(m))return 'Cochez la case de confirmation.';
   if(/profile_incomplete/.test(m))return 'Complétez d’abord votre profil (nom complet).';
@@ -336,6 +352,7 @@ async function boot(){
 async function renderApp(){
   var p=S.profile;try{S.courses=await rpc('list_courses')}catch(x){S.courses=[]}
   var certs=[];try{certs=await rpc('my_certificates')}catch(x){}
+  var trainer=[];try{trainer=await rpc('my_trainer_courses')}catch(x){trainer=[]}
   S.proj={};for(var ci=0;ci<S.courses.length;ci++){try{S.proj[S.courses[ci].id]=await rpc('my_project',{p_course_id:S.courses[ci].id})}catch(x){S.proj[S.courses[ci].id]=null}}
   $('#hello').textContent='Bonjour '+p.full_name.split(' ')[0]+' 👋';
   $('#who').textContent=p.full_name+' · '+p.pole;
@@ -356,19 +373,20 @@ async function renderApp(){
     h+='<div class="course'+(signed?'':' locked')+'"><h3>'+esc(c.title)+'</h3><p class="small" style="margin:0 0 8px">'+esc(c.intro||'')+'</p><div class="bar"><i style="width:'+(all?100*done/all:0)+'%"></i></div><div class="count">'+done+' / '+all+' leçons réussies</div>';
     c.lessons.forEach(function(l,i){
       h+='<div class="lrow"><div><strong>Leçon '+(i+1)+'.</strong> '+esc(l.title)+' <span class="small">· '+(l.minutes||'?')+' min</span></div><div>'+(l.passed?'<span class="badge ok">Réussie ('+l.best_score+'/'+l.total+')</span> ':'')+(signed?'<button class="ghost openLesson" data-id="'+esc(l.id)+'">'+(l.passed?'Revoir':(l.read?'Reprendre':'Commencer'))+'</button>':'<span class="badge lock">🔒</span>')+'</div></div>'});
-    h+=projBlock(c,S.proj[c.id],signed,done,all);var pj=S.proj[c.id],pjOk=!pj||!pj.required||(pj.project&&pj.project.status==='valide'&&pj.grade&&pj.grade.final>=70);
+    h+=projBlock(c,S.proj[c.id],signed,done,all);if(signed)h+='<div style="margin-top:12px"><button class="ghost goFaq" data-id="'+esc(c.id)+'">❓ Foire aux questions / poser une question au formateur</button></div>';var pj=S.proj[c.id],pjOk=!pj||!pj.required||(pj.project&&pj.project.status==='valide'&&pj.grade&&pj.grade.final>=70);
     if(signed&&all&&done===all&&!pjOk)h+='<p class="small" style="margin-top:10px">🎓 Le certificat sera disponible après la validation de votre projet communautaire (note finale minimale : 70 %).</p>';
     if(signed&&all&&done===all&&pjOk)h+='<div style="margin-top:12px"><button class="btn getCert" data-id="'+esc(c.id)+'">🎓 '+(c.certificate_code?'Voir mon certificat':'Obtenir mon certificat')+'</button></div>';
     h+='</div>'});
   h+='</div></div>';
   if(certs.length){h+='<div class="step ok"><div class="n">🎓</div><div style="width:100%"><h3>Mes certificats</h3>'+certs.map(function(c){return '<div class="certrow"><span>'+esc(c.course)+' <span class="small">· '+new Date(c.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><a href="certificat.html?code='+encodeURIComponent(c.code)+'" target="_blank" rel="noopener">Ouvrir le certificat</a></div>'}).join('')+'</div></div>'}
+  if(trainer.length)h+='<div class="step ok"><div class="n">🎓</div><div><h3>Espace formateur</h3><p>Vous êtes formateur : suivez l’avancement des volontaires et répondez à leurs questions.</p><a class="btn" href="formateur.html" style="text-decoration:none;display:inline-block">Ouvrir l’espace formateur</a></div></div>';
   var badges=[];if(signed){try{badges=await rpc('claim_my_badges')}catch(x){badges=[]}}
   if(badges.length){h+='<div class="step ok"><div class="n">🏅</div><div style="width:100%"><h3>Mes badges</h3>'+badges.map(function(b){var fac=b.kind==='facilitateur',u=encodeURIComponent(b.code);return '<div class="certrow"><span>'+(fac?'Badge Facilitateur':'Badge Volontaire OCEFAMI')+' <span class="small">· '+new Date(b.issued_at).toLocaleDateString('fr-FR',{dateStyle:'long'})+'</span></span><span><a href="badge.html?code='+u+'" target="_blank" rel="noopener">Voir le badge</a>'+(fac?' · <a href="facilitateur.html?code='+u+'" target="_blank" rel="noopener">Certificat de facilitateur</a>':'')+'</span></div>'}).join('')+'</div></div>'}
   var subs=[];if(signed){try{subs=await rpc('my_submissions')}catch(x){subs=[]}}
   if(signed){h+='<div class="step"><div class="n">📤</div><div style="width:100%"><h3>Soumettre mon travail</h3><p class="small" style="margin:0 0 8px">Envoyez vos audios, vidéos, articles ou visuels au staff.</p>'+(S.flash?'<div class="okmsg">'+esc(S.flash)+'</div>':'')+'<button class="btn" id="goSubmit">📤 Soumettre un travail</button>'+(subs.length?'<div style="margin-top:12px">'+subs.map(function(s){var st=SUB_STATUS[s.status]||['',''];return '<div class="certrow"><span>'+esc(s.title)+' <span class="small">· '+esc(({audio:'Audio',video:'Vidéo',article:'Article',image:'Image'})[s.kind]||'')+' · '+new Date(s.created_at).toLocaleDateString('fr-FR',{dateStyle:'medium'})+'</span>'+(s.staff_comment?'<br><span class="small">💬 '+esc(s.staff_comment)+'</span>':'')+'</span><span style="font-weight:700;color:'+st[1]+'">'+st[0]+'</span></div>'}).join('')+'</div>':'')+'</div></div>';S.flash=''}
   $('#steps').innerHTML=h;
   var g=function(id,fn){var e=$(id);if(e)e.addEventListener('click',fn)};
-  g('#goSubmit',openSubmit);document.querySelectorAll('.goProj').forEach(function(b){b.addEventListener('click',function(){openProject(b.dataset.id)})});g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);
+  g('#goSubmit',openSubmit);document.querySelectorAll('.goFaq').forEach(function(b){b.addEventListener('click',function(){openFaq(b.dataset.id)})});document.querySelectorAll('.goProj').forEach(function(b){b.addEventListener('click',function(){openProject(b.dataset.id)})});g('#editProf',openProfile);g('#goContract',openContract);g('#viewContract',viewContract);
   document.querySelectorAll('.openLesson').forEach(function(b){b.addEventListener('click',function(){openLesson(b.dataset.id)})});
   document.querySelectorAll('.getCert').forEach(function(b){b.addEventListener('click',async function(){b.disabled=true;try{var code=await rpc('issue_certificate',{p_course_id:b.dataset.id});window.open('certificat.html?code='+encodeURIComponent(code),'_blank');await renderApp()}catch(x){alert(friendly(x));b.disabled=false}})});
   show('v-app');
@@ -427,6 +445,28 @@ $('#projForm').addEventListener('submit',async function(e){e.preventDefault();ms
     S.flash='Merci ! Votre projet a été envoyé. Le staff le relira et vous répondra ici.';await renderApp()}
   catch(x){msg('#projErr',friendly(x))}
   b.disabled=false;b.textContent='Envoyer mon projet'});
+
+
+/* ---------- FAQ du cours ---------- */
+async function openFaq(cid){S.faqCourse=cid;var c=S.courses.filter(function(x){return x.id===cid})[0]||{lessons:[],title:''};
+  $('#faqTitle').textContent='Foire aux questions — '+c.title;
+  $('#faqLesson').innerHTML='<option value="">Question générale sur le cours</option>'+c.lessons.map(function(l,i){return '<option value="'+esc(l.id)+'">'+esc(l.title)+'</option>'}).join('');
+  $('#faqForm').reset();msg('#faqErr','');$('#faqOk').classList.add('hide');show('v-faq');await loadFaq()}
+async function loadFaq(){var L=[];try{L=await rpc('course_faq',{p_course_id:S.faqCourse})}catch(x){$('#faqList').innerHTML='<p class="small">'+esc(friendly(x))+'</p>';return}
+  var mine=L.filter(function(q){return q.mine&&q.status!=='repondue'}),pub=L.filter(function(q){return q.status==='repondue'});
+  var h='';
+  if(mine.length)h+='<h4 style="margin:10px 0 4px">Mes questions en attente</h4>'+mine.map(function(q){return '<div class="certrow" style="display:block"><strong>'+esc(q.question)+'</strong><br><span class="small">'+(q.is_private?'🔒 privée · ':'')+'envoyée le '+new Date(q.created_at).toLocaleDateString('fr-FR',{dateStyle:'medium'})+' · en attente de réponse</span></div>'}).join('');
+  h+='<h4 style="margin:14px 0 4px">Réponses du formateur</h4>';
+  h+=pub.length?pub.map(function(q){return '<div class="certrow" style="display:block"><strong>'+esc(q.question)+'</strong><br><span class="small">'+esc(q.asked_by)+(q.is_private?' · 🔒 privée':'')+'</span><p style="margin:6px 0 0">'+esc(q.answer||'').replace(/\n/g,'<br>')+'</p></div>'}).join(''):'<p class="small">Pas encore de réponse publiée.</p>';
+  $('#faqList').innerHTML=h}
+$('#faqBack').addEventListener('click',renderApp);
+$('#faqForm').addEventListener('submit',async function(e){e.preventDefault();msg('#faqErr','');
+  var q=$('#faqQ').value.trim();if(q.length<3){msg('#faqErr','Écrivez votre question.');return}
+  var b=$('#faqBtn');b.disabled=true;
+  try{await rpc('ask_question',{p_course_id:S.faqCourse,p_lesson_id:$('#faqLesson').value,p_question:q,p_private:$('#faqPriv').checked});
+    $('#faqForm').reset();var o=$('#faqOk');o.textContent='Merci ! Votre question a été envoyée au formateur.';o.classList.remove('hide');await loadFaq()}
+  catch(x){msg('#faqErr',friendly(x))}
+  b.disabled=false});
 
 /* ---------- Contrat ---------- */
 var cv,ctx,drawing=false,ink=0,last=null;
